@@ -1,0 +1,21 @@
+/MOGUS_PROJECT
+├── app/
+│   └── services/
+│       └── app.py
+├── templates/
+│   ├── crud/
+│   │   ├── crear.html
+│   │   ├── editar.html
+│   │   └── ver.html
+│   │   └── eliminar.html
+│   ├── errors/
+│   │   ├── 404.html
+│   │   └── 500.html
+│   ├── procesos/
+│   │   ├── proceso_1.html
+│   └── nav.html
+├── static/
+│   ├── css/
+│   └── img/
+run.py
+requirements.txt

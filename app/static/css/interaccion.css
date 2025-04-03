@@ -1,0 +1,341 @@
+/* interaccion.css - Diseño innovador para el proyecto MOGUS */
+
+/* Variables globales para paleta de colores y consistencia */
+/* Estilos generales */
+body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    color: var(--dark-color);
+    background-color: #fafbfd;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+h1{
+    color: white;
+}
+
+/* Tipografía mejorada */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+h1 {
+    font-size: 2.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-primary);
+    bottom: 0;
+    left: 0;
+    border-radius: 4px;
+}
+
+.lead {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #455777;
+    margin-bottom: 2rem;
+}
+
+/* Tarjetas con estilo moderno */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(26, 43, 78, 0.15);
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: none;
+}
+
+.card-header.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Elementos de lista estilizados */
+ul {
+    padding-left: 1.2rem;
+}
+
+ul li {
+    margin-bottom: 0.75rem;
+    position: relative;
+    padding-left: 0.5rem;
+}
+
+ul li::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0.7rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+/* Iconos animados */
+.fas {
+    transition: var(--transition);
+}
+
+.card:hover .fas {
+    transform: scale(1.1);
+    color: var(--primary-color);
+}
+
+/* Estadísticas con diseño moderno */
+.card.bg-success, .card.bg-info, .card.bg-warning, .card.bg-primary {
+    border-radius: 12px;
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+}
+
+.card.bg-success {
+    background: linear-gradient(135deg, var(--success-color), #66d394) !important;
+}
+
+.card.bg-info {
+    background: linear-gradient(135deg, var(--info-color), #54bbe9) !important;
+}
+
+.card.bg-warning {
+    background: linear-gradient(135deg, var(--warning-color), #f8c471) !important;
+}
+
+.card.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+.card .display-4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Círculos decorativos en tarjetas de estadísticas */
+.card.bg-success::before, .card.bg-info::before, .card.bg-warning::before, .card.bg-primary::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    top: -60px;
+    right: -60px;
+}
+
+.card.bg-success::after, .card.bg-info::after, .card.bg-warning::after, .card.bg-primary::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    bottom: -40px;
+    left: -40px;
+}
+
+/* Acordeón mejorado */
+.accordion-item {
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.accordion-button {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-button::after {
+    background-size: 1.25rem;
+    transition: var(--transition);
+}
+
+.accordion-body {
+    padding: 1.5rem;
+}
+
+/* Animación de fondo para Framework Metodológico */
+.bg-light {
+    background: linear-gradient(120deg, #f8f9fa, #e9f0fd) !important;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-light::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(42, 106, 249, 0.05);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+}
+
+/* Estilos para imágenes */
+img.img-fluid {
+    border-radius: 8px;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+img.img-fluid:hover {
+    transform: scale(1.02);
+}
+
+/* Proceso de Análisis con efecto hover */
+.row .card h4 {
+    position: relative;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.row .card h4::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background: var(--secondary-color);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: var(--transition);
+}
+
+.row .card:hover h4::after {
+    width: 60px;
+    background: var(--primary-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+    font-size: 2rem;
+    }
+    
+    .card .display-4 {
+    font-size: 2rem;
+    }
+    
+    .lead {
+    font-size: 1.1rem;
+    }
+}
+
+/* Animaciones para gráficas */
+canvas {
+    transition: var(--transition);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+}
+
+canvas:hover {
+    transform: scale(1.02);
+}
+
+/* Mejoras para botones e interacciones */
+button, .btn {
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #4281fd, #2a6af9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(42, 106, 249, 0.3);
+}
+
+/* Barra de navegación flotante */
+/* Ajustes para el contenedor del logo */
+.navbar-brand {
+    padding: 0; /* Elimina el padding del contenedor del logo */
+    margin: 0; /* Elimina el margen del contenedor del logo */
+    display: flex; /* Usa flexbox para mejor control */
+    align-items: center; /* Centra verticalmente */
+}
+
+.navbar-logo {
+    max-height: 80px; /* Aumentado en 20px desde los 50px anteriores */
+    width: auto;
+    margin: 0px; /* Elimina margen */
+    padding: 0; /* Pequeño padding vertical y solo a la izquierda */
+}
+
+/* Estilos para los enlaces de navegación */
+.navbar .nav-link {
+    color: #006400;
+    font-weight: 500;
+    padding-top: 20px; /* Ajustado para alinearse con el logo más grande */
+    padding-bottom: 20px;
+}
+
+.navbar .nav-link:hover {
+    color: #004d00;
+}
+/* Animación scroll reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+

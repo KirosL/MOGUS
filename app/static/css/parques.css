@@ -1,0 +1,173 @@
+:root {
+    --mogus-dark-green: #2e7d32;
+    --mogus-light-green: #4caf50;
+    --mogus-accent: #8bc34a;
+    --mogus-light: #f1f8e9;
+    --mogus-dark: #1b5e20;
+    --mogus-hover: #388e3c;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Encabezados y títulos */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+.display-4 {
+    color: var(--mogus-dark-green);
+    font-weight: 700;
+    padding: 100px 0 0 0;
+}
+
+
+.filter-btn {
+    background-color: var(--mogus-dark-green);
+    color: white;
+    border-radius: 30px;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: var(--mogus-hover);
+}
+
+.reset-btn {
+    background-color: #6c757d;
+    color: white;
+    border-radius: 30px;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.reset-btn:hover {
+    background-color: #5a6268;
+}
+
+.view-more-btn {
+    background-color: var(--mogus-light-green);
+    color: white;
+    border-radius: 30px;
+    padding: 5px 15px;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.view-more-btn:hover {
+    background-color: var(--mogus-dark-green);
+    color: white;
+}
+
+/* Encabezados de tarjetas */
+.filter-header {
+    background-color: var(--mogus-dark-green);
+    color: white;
+    padding: 15px;
+    border-radius: 5px 5px 0 0;
+}
+
+.filter-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Tarjetas de parques */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    color: var(--mogus-dark-green);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.card img {
+    object-fit: cover;
+    height: 100%;
+    transition: transform 0.5s;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+/* Etiquetas */
+.card-tags {
+    margin-top: 10px;
+}
+
+.badge {
+    border-radius: 30px;
+    padding: 6px 12px;
+    font-weight: 500;
+    margin-right: 5px;
+    font-size: 0.75rem;
+}
+
+.tag-location {
+    background-color: #3498db;
+}
+
+.tag-type {
+    background-color: var(--mogus-accent);
+}
+
+/* Footer */
+footer {
+    background-color: var(--mogus-dark-green);
+    color: white;
+}
+
+footer h5 {
+    font-weight: 600;
+}
+
+/* Responsividad */
+@media (max-width: 767px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+}
+
+/* Animaciones para los filtros */
+.form-select, .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    transition: all 0.3s;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--mogus-light-green);
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}
+
+/* Elementos decorativos */
+.green-divider {
+    height: 3px;
+    background: linear-gradient(to right, var(--mogus-dark-green), var(--mogus-light-green), var(--mogus-accent));
+    margin: 2rem 0;
+    border-radius: 3px;
+}

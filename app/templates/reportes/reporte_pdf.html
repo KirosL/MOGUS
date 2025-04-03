@@ -1,0 +1,167 @@
+{% extends "base_report.html" %}
+{% block content %}
+<div class="report-container">
+    <!-- Encabezado del reporte -->
+    <div class="header-logo">
+        {% if logo_base64 %}
+        <!-- Logo en base64 -->
+        <img src="data:image/png;base64,{{ logo_base64 }}" alt="MOGUS Logo" class="logo-img">
+        {% endif %}
+        <h2>MOGUS</h2>
+    </div>
+    
+    <h1>Reporte de Diagnóstico: {{ proceso|replace('_', ' ') }}</h1>
+    <p class="report-date">Fecha de generación: {{ now.strftime('%d/%m/%Y %H:%M') }}</p>
+    
+    <!-- Sección de resumen -->
+    <div class="resumen-seccion">
+        
+        <h2 class="module-title">Diagnóstico</h2>
+            <div class="cards-container">
+
+            <h2>Tipos de viabilidad</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Imagen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarjeta in [
+                            {"imagen": imagenes_base64["boceto21_base64"], "titulo": "Viable ✅", "contenido": "Evaluación detallada de especies y ecosistemas."},
+                            {"imagen": imagenes_base64["boceto13_base64"], "titulo": "Medianamente viable ⚠️", "contenido": "Impacto en el microclima urbano."},
+                            {"imagen": imagenes_base64["boceto12_base64"], "titulo": "No viable ❌", "contenido": "Beneficio comunitario y accesibilidad."}
+                        ] %}
+                        <tr>
+                            <td>{{ tarjeta.titulo }}</td>
+                            <td>{{ tarjeta.contenido  }}</td>
+                            <td>
+                                <!-- Logo en base64 -->
+                                <img src="data:image/png;base64,{{ tarjeta.imagen }}" alt="{{ tarjeta.titulo }}" class="logo-img">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        <h2>Resumen del diagnóstico</h2>
+        
+        {% set viable_count = fases|selectattr('viabilidad', 'equalto', 'Viable ✅')|list|length %}
+        {% set medio_count = fases|selectattr('viabilidad', 'equalto', 'Medianamente viable ⚠️')|list|length %}
+        {% set no_viable_count = fases|selectattr('viabilidad', 'equalto', 'No viable ❌')|list|length %}
+        {% set total_count = fases|length %}
+        {% set avg_porcentaje = fases|sum(attribute='porcentaje_indicador') / total_count if total_count > 0 else 0 %}
+        {% set total_area_verde = fases|sum(attribute='area_verde') %}
+        {% set total_area = fases|sum(attribute='area_total') %}
+        {% set porcentaje_verde = (total_area_verde / total_area * 100)|round(2) if total_area > 0 else 0 %}
+        
+        <div class="resumen-item">
+            <span>Total de fases analizadas:</span>
+            <span><strong>{{ total_count }}</strong></span>
+        </div>
+        <div class="resumen-item">
+            <span>Fases viables:</span>
+            <span class="viabilidad-viable">{{ viable_count }} ({{ (viable_count / total_count * 100)|round(1) }}%)</span>
+        </div>
+        <div class="resumen-item">
+            <span>Fases medianamente viables:</span>
+            <span class="viabilidad-media">{{ medio_count }} ({{ (medio_count / total_count * 100)|round(1) }}%)</span>
+        </div>
+        <div class="resumen-item">
+            <span>Fases no viables:</span>
+            <span class="viabilidad-no-viable">{{ no_viable_count }} ({{ (no_viable_count / total_count * 100)|round(1) }}%)</span>
+        </div>
+        <div class="resumen-item">
+            <span>Porcentaje promedio de indicador:</span>
+            <span><strong>{{ avg_porcentaje|round(2) }}%</strong></span>
+        </div>
+        <div class="resumen-item">
+            <span>Área verde total:</span>
+            <span><strong>{{ total_area_verde }} m²</strong></span>
+        </div>
+        <div class="resumen-item">
+            <span>Área total:</span>
+            <span><strong>{{ total_area }} m²</strong></span>
+        </div>
+        <div class="resumen-item">
+            <span>Porcentaje de área verde:</span>
+            <span><strong>{{ porcentaje_verde }}%</strong></span>
+        </div>
+    </div>
+    
+    <!-- Tabla de datos -->
+    <h2>Datos de las fases</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Fase</th>
+                    <th>Tipo</th>
+                    <th>Indicador</th>
+                    <th>Área verde (m²)</th>
+                    <th>Área total (m²)</th>
+                    <th>% Indicador</th>
+                    <th>Viabilidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fase in fases %}
+                <tr>
+                    <td>{{ fase.id_Fase }}</td>
+                    <td>{{ fase.nombre_fase }}</td>
+                    <td>{{ fase.tipo_fase }}</td>
+                    <td>{{ fase.indicador }}</td>
+                    <td>{{ fase.area_verde }}</td>
+                    <td>{{ fase.area_total }}</td>
+                    <td>{{ fase.porcentaje_indicador }}%</td>
+                    <td class="{{ 'viabilidad-viable' if 'Viable ✅' in fase.viabilidad else 'viabilidad-media' if 'Medianamente viable ⚠️' in fase.viabilidad else 'viabilidad-no-viable' }}">
+                        {{ fase.viabilidad }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Primer gráfico en la primera página si cabe, si no, salta a la siguiente -->
+    <h2>Análisis visual de datos</h2>
+    
+    <!-- Gráfico 1: Porcentaje de Indicador por Fase -->
+    <div class="chart-container">
+        <div class="chart-title">Porcentaje de Indicador por Fase</div>
+        <img src="data:image/png;base64,{{ graficos.indicador_barras }}" class="chart-image" alt="Gráfico de barras">
+    </div>
+    
+    <!-- MARCADOR DE SALTO DE PÁGINA - Solo un salto aquí -->
+    <div class="page-break"></div>
+    
+    <!-- Gráfico 2: Comparación de Área Verde vs Área Total -->
+    <div class="chart-container">
+        <div class="chart-title">Comparación de Área Verde vs Área Total por Fase</div>
+        <img src="data:image/png;base64,{{ graficos.area_barras }}" class="chart-image" alt="Gráfico de barras apiladas">
+    </div>
+    
+    <!-- Gráfico 3: Distribución de Viabilidad -->
+    <div class="chart-container">
+        <div class="chart-title">Distribución de la Viabilidad de las Fases</div>
+        <img src="data:image/png;base64,{{ graficos.viabilidad_donut }}" class="chart-image" alt="Gráfico de dona">
+    </div>
+    
+    <!-- Gráfico 4: Evolución del Indicador -->
+    <div class="chart-container">
+        <div class="chart-title">Evolución del Indicador a lo Largo de las Fases</div>
+        <img src="data:image/png;base64,{{ graficos.evolucion_lineas }}" class="chart-image" alt="Gráfico de líneas">
+    </div>
+    
+    <!-- Pie de página -->
+    <div class="footer">
+        <p>Este reporte fue generado automáticamente por el sistema MOGUS</p>
+        <p>© {{ now.year }} MOGUS - Módulo de Gestión Urbana Sostenible</p>
+    </div>
+</div>
+{% endblock %}

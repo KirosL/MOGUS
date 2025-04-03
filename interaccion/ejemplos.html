@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% extends "nav.html" %}
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% block extra_css %}
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/interaccion.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        {% endblock %}
+        
+    </head>
+    <body>
+        {% block banner_section %}{% endblock %} 
+        {% block help_section %}{% endblock %}
+        {% block diagram_section %} {% endblock %}
+
+        {% block content %}
+        <div class="container mt-5">
+            <h1 class="mb-4">Ejemplos Destacados</h1>
+            
+            <div class="row mb-5">
+                <div class="col-lg-8">
+                    <p class="lead">Proyectos emblemáticos donde la metodología MOGUS y la arquitectura de Stan han sido aplicadas para transformar espacios urbanos.</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Filtros -->
+                <div class="col-12 mb-4">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active filter-btn" data-filter="all">Todos</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="parques">Parques</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="corredores">Corredores</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="plazas">Plazas</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Galería de ejemplos -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+                <!-- Ejemplo 1 -->
+                <div class="col proyecto-item" data-category="parques">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://www.peruarki.com/actualidad/2008/01/02/taichung_park_02.jpg" class="card-img-top" alt="Parque Lineal Río Verde">
+                        <div class="card-body">
+                            <h5 class="card-title">suelo urbano en el SUD-1 de Rosselló, Lleida</h5>
+                            <p class="card-text">Recuperación de ribera fluvial mediante aplicación de principios de revegetación estratificada y manejo hidrológico basado en modelo Stan.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEjemplo1">Ver detalles</button>
+                                </div>
+                                <small class="text-muted">2023-2024</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ejemplo 2 -->
+                <div class="col proyecto-item" data-category="corredores">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://i.pinimg.com/originals/b9/13/f2/b913f279d5f3de1ab36978f816217d45.gif" class="card-img-top" alt="Corredor Biodiverso Este-Oeste">
+                        <div class="card-body">
+                            <h5 class="card-title">Corredor Biodiverso Este-Oeste</h5>
+                            <p class="card-text">Sistema de conexión ecológica que atraviesa 4 distritos, implementando nodos de actividad social y servicios ecosistémicos.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEjemplo2">Ver detalles</button>
+                                </div>
+                                <small class="text-muted">En desarrollo</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ejemplo 3 -->
+                <div class="col proyecto-item" data-category="plazas">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://images.adsttc.com/media/images/563e/55b2/e58e/ce4c/0200/002c/newsletter/2.1.jpg?1446925742" class="card-img-top" alt="Plaza Bioclimática Central">
+                        <div class="card-body">
+                            <h5 class="card-title">Plaza Bioclimática Central</h5>
+                            <p class="card-text">Transformación de espacio público mediante aplicación de principios de microclima urbano y regulación térmica natural.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEjemplo3">Ver detalles</button>
+                                </div>
+                                <small class="text-muted">2024</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ejemplo 4 -->
+                <div class="col proyecto-item" data-category="parques">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://images.adsttc.com/media/images/563e/5aeb/e58e/ce4c/0200/0037/original/GIF.gif?1446927080" class="card-img-top" alt="Parque de Infiltración Norte">
+                        <div class="card-body">
+                            <h5 class="card-title">proyecto urbano</h5>
+                            <p class="card-text">Sistema integrado de gestión pluvial con múltiples funciones recreativas y educativas, modelado según arquitectura Stan.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEjemplo4">Ver detalles</button>
+                                </div>
+                                <small class="text-muted">2022-2023</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mapeo de Proyectos -->
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h3>Distribución Geográfica de Proyectos MOGUS</h3>
+                </div>
+                <div class="card-body">
+                    <div id="mapaProyectos" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modales para detalles de proyectos -->
+        <div class="modal fade" id="modalEjemplo1" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Parque Lineal Río Verde</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="ruta/a/imagen1-grande.jpg" class="img-fluid rounded mb-3" alt="Parque Lineal Río Verde">
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Desafío</h5>
+                                <p>Área ribereña degradada con problemas de erosión e inundaciones recurrentes.</p>
+                                
+                                <h5>Solución MOGUS</h5>
+                                <p>Aplicación de modelado hidrológico basado en la arquitectura de Stan para predecir comportamientos fluviales y diseñar infraestructura verde adaptativa.</p>
+                                
+                                <h5>Resultados</h5>
+                                <ul>
+                                    <li>Reducción del 90% en eventos de inundación</li>
+                                    <li>Creación de 2.3 km de senderos recreativos</li>
+                                    <li>Incremento del 120% en visitas semanales</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h5>Principios de la Arquitectura Stan Aplicados</h5>
+                                <p>El proyecto implementó los siguientes componentes de la metodología Stan:</p>
+                                <ul>
+                                    <li>Modelado bayesiano para predicción de caudales</li>
+                                    <li>Análisis multivariable de factores socioambientales</li>
+                                    <li>Diseño adaptativo con monitoreo continuo</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Descargar PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block extra_js %}
+        
+        <!-- Script para filtros -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const proyectoItems = document.querySelectorAll('.proyecto-item');
+                
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const filterValue = this.getAttribute('data-filter');
+                        
+                        // Actualizar botones activos
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Filtrar proyectos
+                        proyectoItems.forEach(item => {
+                            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
+
+            /* Script para animación de scroll reveal */
+            document.addEventListener('DOMContentLoaded', function() {
+                window.addEventListener('scroll', revealOnScroll);
+                
+                function revealOnScroll() {
+                var reveals = document.querySelectorAll('.reveal');
+                
+                for (var i = 0; i < reveals.length; i++) {
+                    var windowHeight = window.innerHeight;
+                    var elementTop = reveals[i].getBoundingClientRect().top;
+                    var elementVisible = 150;
+                    
+                    if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                    }
+                }
+                }
+                
+                // Inicializar
+                revealOnScroll();
+            });
+            
+        </script>
+        
+    
+    {% endblock %}
+    </body>
+</html>

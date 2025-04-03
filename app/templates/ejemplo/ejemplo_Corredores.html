@@ -1,0 +1,325 @@
+{% extends "nav.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parques Urbanos - Infraestructura Verde</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Mogus.png') }}" />
+    {% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/parques.css') }}">
+    {% endblock %}
+</head>
+<body>
+    {% block banner_section %}{% endblock %} 
+    {% block help_section %}{% endblock %}
+    {% block diagram_section %}{% endblock %}
+
+    {% block content %}
+    <div class="container py-5">
+        <!-- Botón Volver al Inicio -->
+        
+        <div class="row mb-5">
+            <div class="col-md-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold text-center mb-3">CORREDORES ECÓLOGICOS</h1>
+                <p class="lead">Ejemplos destacados de infraestructura verde en entornos urbanos</p>
+            </div>
+            <div class="btn-group mb-4 mt-2 mx-auto" role="group" aria-label="Basic radio toggle button group" style="display: flex; justify-content: center;">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {% if pagina_activa == 'parques' %}checked{% endif %}>
+                <label class="btn {% if pagina_activa == 'parques' %}btn-success{% else %}btn-outline-success{% endif %}" for="btnradio1">Parques Urbanos</label>
+            
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" {% if pagina_activa == 'corredores' %}checked{% endif %}>
+                <label class="btn {% if pagina_activa == 'corredores' %}btn-success{% else %}btn-outline-success{% endif %}" for="btnradio2">Corredores Ecológicos</label>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header filter-header">
+                        <h4><i class="bi bi-funnel-fill me-2"></i>Filtros</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="region-filter" class="form-label">Región</label>
+                                <select id="region-filter" class="form-select">
+                                    <option value="todos">Todas las regiones</option>
+                                    <option value="america">América</option>
+                                    <option value="europa">Europa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="type-filter" class="form-label">Tipo de Corredor</label>
+                                <select id="type-filter" class="form-select">
+                                    <option value="todos">Todos los tipos</option>
+                                    <option value="corredor-verde">Corredor Verde</option>
+                                    <option value="corredor-urbano">Corredor Urbano</option>
+                                    <option value="plaza-corredor">Plaza-Corredor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="year-filter" class="form-label">Año</label>
+                                <select id="year-filter" class="form-select">
+                                    <option value="todos">Todos los años</option>
+                                    <option value="2010-2015">2010-2015</option>
+                                    <option value="2016-2020">2016-2020</option>
+                                    <option value="2021-2025">2021-2025</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button id="apply-filters" class="btn filter-btn">Aplicar Filtros</button>
+                                <button id="reset-filters" class="btn reset-btn ms-2">Restablecer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Parques -->
+        <div class="row" id="parques-container">
+            <!-- Parque 1 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="america" data-type="corredor-verde" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/Corredores_verdes.jpg') }}" alt="Centro de Cultura Ambiental Chapultepec" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Corredores verdes</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Medellín, Colombia</p>
+                                <p class="card-text"><strong>Arquitectos:</strong>  </p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">América</span>
+                                    <span class="badge tag-type">Corredores Verdes</span>
+                                </div>
+                                <p class="card-text mt-3">Para lidiar con el calentamiento, los funcionarios de la ciudad colombiana convirtieron 18 calles
+                                    y 12 vías fluviales en paraísos verdes. El proyecto "Corredores verdes" 
+                                    promovió la forestación de estas rutas, lo que permitió reducir la acumulación de calor en la infraestructura urbana.</p>
+                                <a href="https://www.archdaily.cl/cl/921605/medellin-crea-30-corredores-verdes-para-mitigar-el-calentamiento-urbano?ad_source=search&ad_medium=projects_tab&ad_source=search&ad_medium=search_result_all"
+                                    target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 2 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="corredor-verde" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/Paseo_St Joan.jpg') }}" alt="Puerto sur de Køge" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Paseo de St Joan</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Barcelona, España </p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Lola Domènech </p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Corredores Verdes</span>
+                                </div>
+                                <p class="card-text mt-3"> Plantea dos objetivos fundamentales: priorizar el uso peatonal del Paseo 
+                                    y convertirlo en el nuevo corredor verde urbano hasta el parque de la Ciutadella. El Paseo de St Joan (desde arco de triunfo hasta plaza tetuan) ha recuperado su valor social como espacio urbano.</p>
+                                <a href="https://www.archdaily.cl/cl/625586/paisaje-y-arquitectura-remodelacion-del-paseo-de-st-joan-un-nuevo-corredor-verde-urbano-por-lola-domenech?ad_source=search&ad_medium=projects_tab&ad_source=search&ad_medium=search_result_all"
+                                    target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 3 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="corredor-verde" data-year="2010-2015">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/Corredores_Verdes_Superillas.jpg') }}" alt="Parque Red Ribbon" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Supermanzanas</h5>
+                                <p class="card-text"><strong>Ubicación:</strong>  Barcelona, España</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> </p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Corredores </span>
+                                </div>
+                                <p class="card-text mt-3">El programa Supermanzanas fue un modelo de transformación de las calles de la ciudad vigente durante varios mandatos, 
+                                    que tenía el objetivo de recuperar para los peatones una parte del espacio que ocupan los vehículos privados. </p>
+                                <a href="https://ajuntament.barcelona.cat/superilles/es#" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 4 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="corredor-urbano" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/Corredor_urbano_Madrid.jpg') }}" alt="Parque Central de Koper" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Corredor verde urbano de Madrid Río</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Ciudad de Madrid, España</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> </p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Corredores Urbanos</span>
+                                </div>
+                                <p class="card-text mt-3">
+                                    La ejecución del proyecto Madrid Río ha supuesto la recuperación de los espacios liberados del tráfico al soterrarse 
+                                    la M-30 a lo largo del río Manzanares, creando un gran parque lineal.
+                                </p>
+                                <a href="https://www.madrid.es/portales/munimadrid/es/Inicio/El-Ayuntamiento/Arganzuela/Madrid-Rio-informacion-ampliada/?vgnextfmt=default&vgnextoid=5acc7f0917afc110VgnVCM2000000c205a0aRCRD&vgnextchannel=e6f1ca5d5fb96010VgnVCM100000dc0ca8c0RCRD&idCapitulo=5945124"
+                                    target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 5 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="plaza-corredor" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5"> 
+                            <img src="{{ url_for('static', filename='img/corredores/Jardines_elevados_Sants.jpg') }}" alt="Plaza-jardín Rocafort" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Jardines elevados de Sants</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Barcelona, España</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Sergi Godia, Ana Molino architects</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Plaza-Corredor</span>
+                                </div>
+                                <p class="card-text mt-3">En el año 2002 la administración de la ciudad decidió poner en marcha el proyecto de renovación urbana del corredor ferroviario de Sants. 
+                                    se optó por su confinamiento dentro de una caja ligera y transparente en buena parte del trazado, 
+                                    cuya cubierta debía transformarse en un largo paseo elevado y ajardinado de 800 m. de longitud
+                                </p>
+                                <a href="https://www.archdaily.cl/cl/801124/jardines-elevados-de-sants-en-barcelona-sergi-godia-plus-ana-molino-architects?ad_source=search&ad_medium=projects_tab"
+                                    target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 6 
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="boulevard" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/flores-blancas.jpg') }}" alt="Boulevard Flores Blancas" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Boulevard Flores Blancas</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Kazán, Rusia</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> PARQUE, Grupo de Proyecto 8</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Boulevard</span>
+                                </div>
+                                <p class="card-text mt-3">Eje urbano verde que conecta diversos espacios públicos y mejora la movilidad peatonal con áreas de descanso y vegetación.</p>
+                                <a href="https://www.archdaily.com.br/br/923688/boulevard-white-flowers-project-group-8-plus-park" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 7 
+            <div class="col-lg-6 mb-4 parque-card" data-region="america" data-type="parque" data-year="2010-2015">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/madureira.jpg') }}" alt="Parque Madureira" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Parque Madureira</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Rio de Janeiro, Brasil</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Ruy Rezende Arquitetos</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">América</span>
+                                    <span class="badge tag-type">Parque Urbano</span>
+                                </div>
+                                <p class="card-text mt-3">Parque lineal que transformó un antiguo corredor de transmisión eléctrica en un espacio recreativo con diversas actividades culturales.</p>
+                                <a href="https://www.archdaily.cl/cl/789975/parque-madureira-ruy-rezende-arquitetos" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Parque 8 
+            <div class="col-lg-6 mb-4 parque-card" data-region="asia" data-type="jardin" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/corredores/resiliencia.jpg') }}" alt="Jardín inmersivo de resiliencia" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Jardín inmersivo de resiliencia</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Gwangjin District, Corea del Sur</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Changyeob Lee, Studio ReBuild</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Asia</span>
+                                    <span class="badge tag-type">Jardín</span>
+                                </div>
+                                <p class="card-text mt-3">Espacio experimental que explora soluciones basadas en la naturaleza para hacer frente al cambio climático en entornos urbanos.</p>
+                                <a href="https://www.archdaily.cl/cl/1019112/jardin-inmersivo-de-resiliencia-changyeob-lee-plus-studio-rebuild" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <!-- Mensaje sin resultados -->
+        <div id="no-results" class="row mt-4 d-none">
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle me-2"></i>No se encontraron parques que coincidan con los filtros seleccionados.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Proyecto MOGUS</h5>
+                    <p>Sistema de análisis de infraestructura verde urbana</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2025 MOGUS. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/parques.js') }}"></script>
+    {% endblock %}
+</body>
+</html>

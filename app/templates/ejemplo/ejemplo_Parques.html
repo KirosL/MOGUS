@@ -1,0 +1,313 @@
+{% extends "nav.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parques Urbanos - Infraestructura Verde</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Mogus.png') }}" />
+    {% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/parques.css') }}">
+    {% endblock %}
+</head>
+<body>
+    {% block banner_section %}{% endblock %} 
+    {% block help_section %}{% endblock %}
+    {% block diagram_section %}{% endblock %}
+
+    {% block content %}
+    <div class="container py-5">
+        <!-- Botón Volver al Inicio -->
+        
+        <div class="row mb-5">
+            <div class="col-md-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold text-center mb-3">PARQUES URBANOS</h1>
+                <p class="lead">Ejemplos destacados de infraestructura verde en entornos urbanos</p>
+            </div>
+            <div class="btn-group mb-4 mt-2 mx-auto" role="group" aria-label="Basic radio toggle button group" style="display: flex; justify-content: center;">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {% if pagina_activa == 'parques' %}checked{% endif %}>
+                <label class="btn {% if pagina_activa == 'parques' %}btn-success{% else %}btn-outline-success{% endif %}" for="btnradio1">Parques Urbanos</label>
+            
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" {% if pagina_activa == 'corredores' %}checked{% endif %}>
+                <label class="btn {% if pagina_activa == 'corredores' %}btn-success{% else %}btn-outline-success{% endif %}" for="btnradio2">Corredores Ecológicos</label>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header filter-header">
+                        <h4><i class="bi bi-funnel-fill me-2"></i>Filtros</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="region-filter" class="form-label">Región</label>
+                                <select id="region-filter" class="form-select">
+                                    <option value="todos">Todas las regiones</option>
+                                    <option value="america">América</option>
+                                    <option value="europa">Europa</option>
+                                    <option value="asia">Asia</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="type-filter" class="form-label">Tipo de Parque</label>
+                                <select id="type-filter" class="form-select">
+                                    <option value="todos">Todos los tipos</option>
+                                    <option value="urbano">Parque Urbano</option>
+                                    <option value="boulevard">Boulevard</option>
+                                    <option value="jardin">Jardín</option>
+                                    <option value="plaza">Plaza</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="year-filter" class="form-label">Año</label>
+                                <select id="year-filter" class="form-select">
+                                    <option value="todos">Todos los años</option>
+                                    <option value="2010-2015">2010-2015</option>
+                                    <option value="2016-2020">2016-2020</option>
+                                    <option value="2021-2025">2021-2025</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <button id="apply-filters" class="btn filter-btn">Aplicar Filtros</button>
+                                <button id="reset-filters" class="btn reset-btn ms-2">Restablecer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Parques -->
+        <div class="row" id="parques-container">
+            <!-- Parque 1 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="america" data-type="centro" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/chapultepec.jpg') }}" alt="Centro de Cultura Ambiental Chapultepec" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Centro de Cultura Ambiental Chapultepec</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Ciudad de México, México</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> ERRE q ERRE arquitectura y urbanismo, Taller ID</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">América</span>
+                                    <span class="badge tag-type">Centro Cultural</span>
+                                </div>
+                                <p class="card-text mt-3">Centro cultural que integra espacios educativos y recreativos con el entorno natural del Bosque de Chapultepec.</p>
+                                <a href="https://www.archdaily.com.br/br/998350/centro-de-cultura-ambiental-chapultepec-erreqerre-arquitectura-y-urbanismo-plus-taller-id" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 2 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="puerto" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/Køge.jpg') }}" alt="Puerto sur de Køge" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Puerto Sur de Køge</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Køge, Dinamarca</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> SLA</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Puerto</span>
+                                </div>
+                                <p class="card-text mt-3">Revitalización de la zona portuaria que combina infraestructura verde con espacios públicos adaptados al cambio climático.</p>
+                                <a href="https://www.archdaily.com.br/br/997045/koge-south-harbor-sla" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 3 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="asia" data-type="parque" data-year="2010-2015">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/ribbon.jpg') }}" alt="Parque Red Ribbon" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Parque Red Ribbon</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Qinhuangdao, China</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Turenscape</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Asia</span>
+                                    <span class="badge tag-type">Parque Urbano</span>
+                                </div>
+                                <p class="card-text mt-3">Parque lineal con un distintivo elemento rojo que atraviesa el paisaje, integrando zonas naturales con espacios recreativos.</p>
+                                <a href="https://www.archdaily.com.br/br/01-156629/parque-red-ribbon-slash-turenscape" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 4 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="parque" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/koper.jpg') }}" alt="Parque Central de Koper" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Parque Central de Koper</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Koper, Eslovenia</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Enota</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Parque Urbano</span>
+                                </div>
+                                <p class="card-text mt-3">Espacio público que conecta diversos barrios de la ciudad y ofrece áreas verdes multifuncionales para diferentes actividades.</p>
+                                <a href="https://www.archdaily.com.br/br/915059/parque-central-de-koper-enota" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 5 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="plaza" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/rocafort.jpg') }}" alt="Plaza-jardín Rocafort" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Plaza-jardín Rocafort</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Barcelona, España</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> 08014 arquitectura</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Plaza-jardín</span>
+                                </div>
+                                <p class="card-text mt-3">Proyecto de renaturalización urbana que transforma antiguas zonas pavimentadas en espacios verdes que mejoran la biodiversidad.</p>
+                                <a href="https://www.archdaily.cl/cl/1021907/hacia-la-renaturalizacion-de-los-espacios-urbanos-como-los-proyectos-de-08014-arquitectura-recuperan-las-calles-de-barcelona" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 6 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="europa" data-type="boulevard" data-year="2016-2020">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/flores-blancas.jpg') }}" alt="Boulevard Flores Blancas" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Boulevard Flores Blancas</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Kazán, Rusia</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> PARQUE, Grupo de Proyecto 8</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Europa</span>
+                                    <span class="badge tag-type">Boulevard</span>
+                                </div>
+                                <p class="card-text mt-3">Eje urbano verde que conecta diversos espacios públicos y mejora la movilidad peatonal con áreas de descanso y vegetación.</p>
+                                <a href="https://www.archdaily.com.br/br/923688/boulevard-white-flowers-project-group-8-plus-park" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 7 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="america" data-type="parque" data-year="2010-2015">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/madureira.jpg') }}" alt="Parque Madureira" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Parque Madureira</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Rio de Janeiro, Brasil</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Ruy Rezende Arquitetos</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">América</span>
+                                    <span class="badge tag-type">Parque Urbano</span>
+                                </div>
+                                <p class="card-text mt-3">Parque lineal que transformó un antiguo corredor de transmisión eléctrica en un espacio recreativo con diversas actividades culturales.</p>
+                                <a href="https://www.archdaily.cl/cl/789975/parque-madureira-ruy-rezende-arquitetos" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parque 8 -->
+            <div class="col-lg-6 mb-4 parque-card" data-region="asia" data-type="jardin" data-year="2021-2025">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ url_for('static', filename='img/parques/resiliencia.jpg') }}" alt="Jardín inmersivo de resiliencia" class="img-fluid rounded-start h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">Jardín inmersivo de resiliencia</h5>
+                                <p class="card-text"><strong>Ubicación:</strong> Gwangjin District, Corea del Sur</p>
+                                <p class="card-text"><strong>Arquitectos:</strong> Changyeob Lee, Studio ReBuild</p>
+                                <div class="card-tags">
+                                    <span class="badge tag-location">Asia</span>
+                                    <span class="badge tag-type">Jardín</span>
+                                </div>
+                                <p class="card-text mt-3">Espacio experimental que explora soluciones basadas en la naturaleza para hacer frente al cambio climático en entornos urbanos.</p>
+                                <a href="https://www.archdaily.cl/cl/1019112/jardin-inmersivo-de-resiliencia-changyeob-lee-plus-studio-rebuild" target="_blank" class="btn view-more-btn mt-2">Ver Más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje sin resultados -->
+        <div id="no-results" class="row mt-4 d-none">
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle me-2"></i>No se encontraron parques que coincidan con los filtros seleccionados.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Proyecto MOGUS</h5>
+                    <p>Sistema de análisis de infraestructura verde urbana</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2025 MOGUS. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/parques.js') }}"></script>
+    {% endblock %}
+</body>
+</html>
