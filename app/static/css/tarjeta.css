@@ -169,6 +169,11 @@ body {
     color: var(--text-dark);
     font-weight: 700;
     position: relative;
+    padding-top: 0rem;
+    font-size: 2rem;
+}
+
+.first {
     padding-top: 4rem;
     font-size: 2rem;
 }

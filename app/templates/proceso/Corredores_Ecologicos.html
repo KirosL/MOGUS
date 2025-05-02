@@ -31,9 +31,7 @@
             <h2 class="table-title">Registro de Datos - Linea de Investigación</h2>
         </div>
 
-        <!-- Buttons for actions 
-
-            -->
+        <!-- Buttons for actions -->
         <div class="mb-3">
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearModal">
                 <i class="fas fa-plus"></i> Nuevo Registro
@@ -42,8 +40,12 @@
             <a href="{{ url_for('exportar_excel', proceso=Proceso) }}" class="btn btn-primary ms-2">
                 <i class="fas fa-file-excel"></i> Exportar a Excel
             </a>
+            <a data-bs-toggle="modal" data-bs-target="#crearTitulo" class="btn btn-success">
+                <i class="fas fa-pen-nib"></i> Agregar Titulo tabla
+            </a>
         </div>
 
+        <h2 class="title-table">   </h2>
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -270,15 +272,31 @@
             </div>
         </div>
 
+        <!-- Modal Titulo -->
+        <div class="modal fade" id="crearTitulo" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Titulo Para Tabla</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form  onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="tablaTitulo" class="form-label">Nombre Del Proyecto</label>
+                                <input type="text" class="form-control" id="tablaTitulo" name="tablaTitulo" required>
+                            </div> 
+                            <button type="submit" class="btn btn-primary mt-2" id="aplicarTitulo">Aplicar título</button>                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <p>Proceso actual: {{ Proceso }}</p>
-
-        <p>
-            No hay registros disponibles. Total registros: {{ fases|length }}
-        </p>
 
         <div class="caption">
             Datos actualizados hasta {{ now.strftime('%B %Y') }}. Fuente: Departamento de Sostenibilidad.
-        </div>
+        </div>        
         
         <footer>
             © {{ now.year }} - Compromiso con un futuro más verde
@@ -288,6 +306,7 @@
 
 
     <!-- Image Modal -->
+    
     <div class="modal fade modal-fullsize" id="imageModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -297,12 +316,17 @@
                 </div>
                 <div class="modal-body">
                     {% if Proceso == 'Parques_Urbanos' %}
-                    <img src="{{ url_for('static', filename='img/Proceso_1.png') }}" alt="Diagrama Parques Urbanos" id="fullSizeImage">
+                    <img src="{{ url_for('static', filename='img/Proceso_1.png') }}" alt="Diagrama Parques Urbanos" id="fullSizeImage" class="img-fluid imagen-diagrama">
                     {% elif Proceso == 'Corredores_Ecologicos' %}
-                    <img src="{{ url_for('static', filename='img/Proceso_2.png') }}" alt="Diagrama Corredores Ecológicos" id="fullSizeImage">
+                    <img src="{{ url_for('static', filename='img/Proceso_2.png') }}" alt="Diagrama Corredores Ecológicos" id="fullSizeImage" class="img-fluid imagen-diagrama">
                     {% endif %}
+
                 </div>
                 <div class="modal-footer">
+                    <label for="imagenInput" class="btn btn-outline-primary">
+                        Subir Imagen
+                    </label>
+                    <input type="file" id="imagenInput" accept="image/*" style="display: none;">
                     <p class="modal-text">Este diagrama representa las fases del proyecto {{ Proceso }}</p>
                     <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal">Cerrar</button>
                 </div>
@@ -310,138 +334,6 @@
         </div>
     </div>
 
-            <!-- Módulo de Diagnóstico con tarjetas 3x3 -->
-            <div class="module-section" id="diagnosticoModule">
-                <div class="container">
-                    <h2 class="module-title">Diagnóstico</h2>
-                    
-                    <div class="cards-container">
-                        <!-- Tarjeta 1 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h3 class="card-title">Análisis de Biodiversidad</h3>
-                            <div class="card-content">
-                                <p>Evaluación detallada de especies y ecosistemas en la zona seleccionada para el proyecto.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 2 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-cloud-sun"></i>
-                            </div>
-                            <h3 class="card-title">Impacto Climático</h3>
-                            <div class="card-content">
-                                <p>Resultados de estudios sobre el impacto del proyecto en el microclima urbano y mitigación del calor.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 3 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3 class="card-title">Beneficio Social</h3>
-                            <div class="card-content">
-                                <p>Métricas de accesibilidad y beneficio comunitario para los habitantes de zonas aledañas.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 4 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-water"></i>
-                            </div>
-                            <h3 class="card-title">Gestión Hídrica</h3>
-                            <div class="card-content">
-                                <p>Análisis del manejo sostenible del agua pluvial y sistemas de riego eficientes.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 5 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-tree"></i>
-                            </div>
-                            <h3 class="card-title">Cobertura Vegetal</h3>
-                            <div class="card-content">
-                                <p>Estadísticas de áreas verdes instaladas y especies nativas incorporadas al proyecto.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 6 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-coins"></i>
-                            </div>
-                            <h3 class="card-title">Viabilidad Económica</h3>
-                            <div class="card-content">
-                                <p>Proyecciones financieras y costos de mantenimiento a largo plazo.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 7 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-seedling"></i>
-                            </div>
-                            <h3 class="card-title">Restauración Ecológica</h3>
-                            <div class="card-content">
-                                <p>Progreso en la recuperación de servicios ecosistémicos en áreas degradadas.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 8 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-hands-helping"></i>
-                            </div>
-                            <h3 class="card-title">Participación Comunitaria</h3>
-                            <div class="card-content">
-                                <p>Indicadores de involucramiento ciudadano y apropiación del espacio público.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Tarjeta 9 -->
-                        <div class="diagnostico-card">
-                            <div class="card-icon">
-                                <i class="fas fa-balance-scale"></i>
-                            </div>
-                            <h3 class="card-title">Cumplimiento Normativo</h3>
-                            <div class="card-content">
-                                <p>Evaluación del apego a normativas ambientales y urbanas vigentes.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    <!-- Módulo de Resultados (descarga) -->
-    <div class="module-section" id="resultadosModule">
-        <div class="container">
-            <h2 class="module-title">Resultados</h2>
-            
-            <div class="informacion-plantilla d-flex align-items-center bg-info bg-opacity-10 p-3 rounded my-4">
-                <div class="me-3">
-                    <i class="fas fa-info-circle text-info" style="font-size: 2rem;"></i>
-                </div>
-                <div>
-                    <h2 class="h4 mb-2">Título explicativo de resultados</h2>
-                    <p class="mb-0">
-                        Se dejara una plantilla al final para descargar y poder usarla, esta plantilla sirve para poder poner lo visto en la tabla procesos y diagrama de flujos con su línea de investigación.
-                        También puede descargar esa tabla para pasar los datos al excel descargable
-                    </p>
-                </div>
-            </div>
-            
-            <div class="descarga-seccion">
-                <h2>Descargar Plantilla de Excel</h2>
-                <p>Descarga nuestra plantilla de Excel para realizar tus propios análisis.</p>
-                <a href="{{url_for('static', filename='RESULTADOS.xlsx')}}" class="boton-descarga" download>Descargar Plantilla</a>
-            </div>
-        </div>
-    </div>
             <!-- Navegación fija para cambiar entre módulos -->
             <div class="module-navigation">
                 <button class="nav-button" id="navToTabla" title="Ir a Tabla">

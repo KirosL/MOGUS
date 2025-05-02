@@ -67,9 +67,20 @@
             </div>
             
             <div class="download-buttons">
-                <button class="boton-descarga excel">
-                    <i class="fas fa-download"></i> Descargar Excel
-                </button>
+                {% if Proceso|lower == 'parques_urbanos' %}
+                    <a class="boton-descarga" onclick="window.location.href='/descargar_excel/Parque_Urbano'">
+                        <i class="fas fa-download"></i> Descargar Excel
+                    </a>
+                {% elif Proceso|lower == 'corredores_ecologicos' %}
+                    <a class="boton-descarga" onclick="window.location.href='/descargar_excel/Corredor_Urbano'">
+                        <i class="fas fa-download"></i> Descargar Excel
+                    </a>
+                {% else %}
+                    <p>No hay Excel disponible para este proceso. Valor recibido: {{ Proceso }}</p>
+                {% endif %}
+
+                
+                
                 <a href="{{ url_for('generar_pdf', proceso=Proceso) }}" class="boton-descarga pdf">
                     <i class="fas fa-download"></i> Descargar PDF
                 </a>

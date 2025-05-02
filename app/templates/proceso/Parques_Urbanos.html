@@ -31,9 +31,7 @@
             <h2 class="table-title">Registro de Datos - Linea de Investigación</h2>
         </div>
 
-        <!-- Buttons for actions 
-
-            -->
+        <!-- Buttons for actions -->
         <div class="mb-3">
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearModal">
                 <i class="fas fa-plus"></i> Nuevo Registro
@@ -42,8 +40,14 @@
             <a href="{{ url_for('exportar_excel', proceso=Proceso) }}" class="btn btn-primary ms-2">
                 <i class="fas fa-file-excel"></i> Exportar a Excel
             </a>
+            <a data-bs-toggle="modal" data-bs-target="#crearTitulo" class="btn btn-success">
+                <i class="fas fa-pen-nib"></i> Agregar Titulo tabla
+            </a>
         </div>
 
+
+        <div id="proceso-container" data-proceso="{{ Proceso }}"></div>
+        <h2 class="title-table">   </h2>
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -271,11 +275,33 @@
             </div>
         </div>
 
+        <!-- Modal Titulo -->
+        <div class="modal fade" id="crearTitulo" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Titulo Para Tabla</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form  onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="tablaTitulo" class="form-label">Nombre Del Proyecto</label>
+                                <input type="text" class="form-control" id="tablaTitulo" name="tablaTitulo" required>
+                            </div> 
+                            <button type="submit" class="btn btn-primary mt-2" id="aplicarTitulo">Aplicar título</button>                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <p>Proceso actual: {{ Proceso }}</p>
 
         <div class="caption">
             Datos actualizados hasta {{ now.strftime('%B %Y') }}. Fuente: Departamento de Sostenibilidad.
         </div>
+        
         
         <footer>
             © {{ now.year }} - Compromiso con un futuro más verde
@@ -283,24 +309,29 @@
     </div>
 
 
-
+    <div id="proceso-container" data-proceso="{{ Proceso }}"></div>
     <!-- Image Modal -->
     <div class="modal fade modal-fullsize" id="imageModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Diagrama de Flujo - {{ Proceso }}</h5>
+                    <h5 class="modal-title">Imagen Proyecto {{ Proceso }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     {% if Proceso == 'Parques_Urbanos' %}
-                    <img src="{{ url_for('static', filename='img/Proceso_1.png') }}" alt="Diagrama Parques Urbanos" id="fullSizeImage">
+                    <img src="{{ url_for('static', filename='img/Proceso_1.png') }}" alt="Diagrama Parques Urbanos" id="fullSizeImage" class="img-fluid imagen-diagrama">
                     {% elif Proceso == 'Corredores_Ecologicos' %}
-                    <img src="{{ url_for('static', filename='img/Proceso_2.png') }}" alt="Diagrama Corredores Ecológicos" id="fullSizeImage">
+                    <img src="{{ url_for('static', filename='img/Proceso_2.png') }}" alt="Diagrama Corredores Ecológicos" id="fullSizeImage" class="img-fluid imagen-diagrama">
                     {% endif %}
+
                 </div>
                 <div class="modal-footer">
-                    <p class="modal-text">Este diagrama representa las fases del proyecto {{ Proceso }}</p>
+                    <label for="imagenInput" class="btn btn-outline-primary">
+                        Subir Imagen
+                    </label>
+                    <input type="file" id="imagenInput" accept="image/*" style="display: none;">
+                    <p class="modal-text">Este diagrama representa El proyecto {{ Proceso }} <span class="title-table">   Hola</span></p>
                     <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -330,6 +361,7 @@
     {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/proceso.js') }}"></script>
+
     {% endblock %}
 </body>
 </html>

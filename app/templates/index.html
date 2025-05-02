@@ -26,6 +26,14 @@
                 Introduccion
             </button>
         </div>
+        <div class="container">
+            <p class="description">   ..</p>
+            <a class="btn btn-success" href="https://www.youtube.com/watch?v=f-I0PmRt0yM" target="_blank"> 
+                <i class="fa-solid fa-circle-info fa-sm" style="color: #c3c4c0;"></i>
+                Video Tutorial
+            </a>
+        </div>
+        
     </section>
     {% endblock %}
     
@@ -66,9 +74,7 @@
                 <h2 class="display-4 fw-bold text-center mb-3" style="color: var(--mogus-dark-green);">PROYECTO MOGUS</h2>
                 <p class="lead">Sistema de análisis y evaluación en el espacio urbano</p>
             </div>
-        </div>
-
-        
+        </div>  
 
         <!-- Tarjeta principal de explicación -->
         <div class="row mb-5">
@@ -102,7 +108,55 @@
                 </div>
             </div>
         </div>
-
+            <!-- Sección del Diagrama de Flujos -->
+    <div class="header-tab">Diagrama de Flujos</div>
+    <!-- Banner con carrusel de imágenes Bootstrap para la sección Diagrama de Flujos -->
+        <div class="container banner-carousel-container my-4">
+            <div id="diagramFlowCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#diagramFlowCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#diagramFlowCarousel" data-bs-slide-to="1"  aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#diagramFlowCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            
+            <!-- Slides del carrusel -->
+            <div class="carousel-inner rounded-4 shadow">
+                <div class="carousel-item active">
+                <img src="https://fbi.cults3d.com/uploaders/38055520/illustration-file/37f4ac2c-79fd-4f88-acc6-855369603a9e/t%C3%A9l%C3%A9charg%C3%A9-5.jpg" class="d-block w-100 carousel-image" alt="Diagrama de Flujo - Análisis de Infraestructura Urbana">
+                <div class="carousel-caption">
+                    <h3>Análisis de Infraestructura Urbana</h3>
+                    <p>Diagrama completo del proceso de evaluación y gestión</p>
+                </div>
+                </div>
+                <div class="carousel-item">
+                <img src="https://i.ytimg.com/vi/pWmh5lqqtLo/sddefault.jpg" class="d-block w-100 carousel-image" alt="Componentes del Sistema de Infraestructura Verde">
+                <div class="carousel-caption">
+                    <h3>Componentes del Sistema</h3>
+                    <p>Elementos clave para la evaluación de infraestructura verde</p>
+                </div>
+                </div>
+                <div class="carousel-item">
+                <img src="https://uploads.dailydot.com/2025/04/tung_tung_sahur_meme.jpg?q=65&auto=format&w=1600&ar=2:1&fit=crop" class="d-block w-100 carousel-image" alt="Resultados y Recomendaciones">
+                <div class="carousel-caption">
+                    <h3>Resultados y Recomendaciones</h3>
+                    <p>Visualización de datos y propuestas de mejora</p>
+                </div>
+                </div>
+            </div>
+            
+            <!-- Controles de navegación -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#diagramFlowCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#diagramFlowCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+            </div>
+        </div>
+        
         <!-- Sección del Diagrama de Flujos -->
         <div class="header-tab">Diagrama de Flujos</div>
         <div class="row mb-5">
@@ -216,6 +270,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
         <!-- Sección de la Tabla de Fases -->
         <div class="header-tab">Tabla de Fases</div>

@@ -1,182 +1,117 @@
+# ========== IMPORTACIONES ==========
 from flask import Flask, abort, render_template, request, redirect, url_for, flash, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import pytz
+import pandas as pd
 import os
-from werkzeug.security import generate_password_hash
-from functools import wraps
-import pytz  # Instalar la libreria: pip install pytz
-import pandas as pd  # Instalar: pip install pandas
-import io  # Ya incluido en Python
-from weasyprint import HTML, CSS
-from flask import render_template
+import io
 import tempfile
-import os
-from datetime import datetime
-# Añadir estas importaciones en app.py:
+from functools import wraps
+from werkzeug.security import generate_password_hash
+
+# Para exportar PDF
+from weasyprint import HTML, CSS
+
+# Para gráficos
 import matplotlib
-matplotlib.use('Agg')  # Para usar matplotlib sin un servidor gráfico
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
-# Inicialización de la aplicación Flask
+
+
+# ========== CONFIGURACIÓN DE LA APP ==========
 app = Flask(__name__, static_folder='../static', template_folder='../templates')
-
-# Configuración de la clave secreta para sesiones y flash messages
 app.secret_key = os.environ.get('SECRET_KEY') or os.urandom(24)
-# Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///procesos.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
-db = SQLAlchemy(app)  
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# Función para obtener la hora colombiana
+# ========== FUNCIONES AUXILIARES ==========
 def get_colombian_time():
+    """Retorna la hora actual en la zona horaria de Colombia."""
     colombian_tz = pytz.timezone('America/Bogota')
     return datetime.now(colombian_tz)
 
+def get_model_by_process(proceso):
+    """Devuelve el modelo correspondiente al proceso"""
+    if proceso == 'Parques_Urbanos':
+        return Parque_Urbano
+    elif proceso == 'Corredores_Ecologicos':
+        return Corredor_Urbano
+    return None
 
-# Definición del modelo de datos para la primera fase
-class Parque_Urbano(db.Model):
-
-    id_Fase = db.Column(db.Integer, primary_key=True)
-    nombre_fase = db.Column(db.String(100), nullable=False)
-    tipo_fase = db.Column(db.String(100), nullable=False)
-    descripcion = db.Column(db.Text, nullable=False)
-    indicador = db.Column(db.String(100), nullable=False)
-    nombre_revisor = db.Column(db.String(100), nullable=False)
-    area_verde = db.Column(db.Integer, nullable=False)
-    area_total = db.Column(db.Integer, nullable=False)
-    porcentaje_indicador = db.Column(db.Integer, nullable=False)
-    viabilidad = db.Column(db.Text, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time, onupdate=get_colombian_time)
-    fecha_creacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time)
-    
-    def calcular_porcentaje(self):
-        """Calcular porcentaje"""
-        if self.area_total > 0:
-            return round((self.area_verde / self.area_total) * 100, 2)
-        return 0
-    
-    def calcular_viabilidad(self):
-        """Calcular viabilidad """
-        porcentaje = self.calcular_porcentaje() / 100
-        if porcentaje >= 0.7:
-            return "Viable ✅"
-        elif porcentaje >= 0.4:
-            return "Medianamente viable ⚠️"
-        else:
-            return "No viable ❌"
-
-    def save(self, db):
-        """Método para guardar y calcular automáticamente porcentaje y viabilidad"""
-        self.porcentaje_indicador = self.calcular_porcentaje()
-        self.viabilidad = self.calcular_viabilidad()
-        db.session.add(self)
-        db.session.commit()
-        return self    
-    
-    def to_dict(self):
-        return {
-            'id_Fase': self.id_Fase,
-            'nombre_fase': self.nombre_fase,
-            'tipo_fase': self.tipo_fase,
-            'descripcion': self.descripcion,
-            'indicador': self.indicador,
-            'nombre_revisor': self.nombre_revisor,
-            'area_verde': self.area_verde,
-            'area_total': self.area_total,
-            'porcentaje_indicador': self.porcentaje_indicador,
-            'viabilidad': self.viabilidad,
-            'fecha_actualizacion': self.fecha_actualizacion.strftime('%Y-%m-%d %H:%M:%S %Z'),
-            'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S %Z')
-        }
-
-# Definición del modelo de datos para la segunda fase
-class Corredor_Urbano(db.Model):
-
-    id_Fase = db.Column(db.Integer, primary_key=True)
-    nombre_fase = db.Column(db.String(100), nullable=False)
-    tipo_fase = db.Column(db.String(100), nullable=False)
-    descripcion = db.Column(db.Text, nullable=False)
-    indicador = db.Column(db.String(100), nullable=False)
-    nombre_revisor = db.Column(db.String(100), nullable=False)
-    area_verde = db.Column(db.Integer, nullable=False)
-    area_total = db.Column(db.Integer, nullable=False)
-    porcentaje_indicador = db.Column(db.Integer, nullable=False)
-    viabilidad = db.Column(db.Text, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time, onupdate=get_colombian_time)
-    fecha_creacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time)
-    
-    def calcular_porcentaje(self):
-        """Calcular porcentaje"""
-        if self.area_total > 0:
-            return round((self.area_verde / self.area_total) * 100, 2)
-        return 0
-    
-    def calcular_viabilidad(self):
-        """Calcular viabilidad """
-        porcentaje = self.calcular_porcentaje() / 100
-        if porcentaje >= 0.7:
-            return "Viable ✅"
-        elif porcentaje >= 0.4:
-            return "Medianamente viable ⚠️"
-        else:
-            return "No viable ❌"
-
-    def save(self, db):
-        """Método para guardar y calcular automáticamente porcentaje y viabilidad"""
-        self.porcentaje_indicador = self.calcular_porcentaje()
-        self.viabilidad = self.calcular_viabilidad()
-        db.session.add(self)
-        db.session.commit()
-        return self
-    
-    
-    def to_dict(self):
-        return {
-            'id_Fase': self.id_Fase,
-            'nombre_fase': self.nombre_fase,
-            'tipo_fase': self.tipo_fase,
-            'descripcion': self.descripcion,
-            'indicador': self.indicador,
-            'nombre_revisor': self.nombre_revisor,
-            'area_verde': self.area_verde,
-            'area_total': self.area_total,
-            'porcentaje_indicador': self.porcentaje_indicador,
-            'viabilidad': self.viabilidad,
-            'fecha_actualizacion': self.fecha_actualizacion.strftime('%Y-%m-%d %H:%M:%S %Z'),
-            'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S %Z')
-        }
-
-
-# Decorator para manejo de errores
+# ========== DECORADORES ==========
 def handle_errors(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         try:
             return f(*args, **kwargs)
         except Exception as e:
-            db.session.rollback()  # Revierte cambios en la BD si hay error
-            flash(f'Error: {str(e)}', 'danger')  # Muestra mensaje de error
-            return redirect(url_for('home'))  # Redirige a la página principal
+            db.session.rollback()
+            flash(f'Error: {str(e)}', 'danger')
+            return redirect(url_for('home'))
     return decorated_function
 
-# Función auxiliar para obtener el modelo según el proceso
-def get_model_by_process(proceso):
-    """
-    Devuelve el modelo correspondiente al proceso
-    """
-    if proceso == 'Parques_Urbanos':
-        return Parque_Urbano
-    # Aquí puedes agregar más modelos cuando implementes Corredores_Ecologicos y proceso3
-    elif proceso == 'Corredores_Ecologicos':
-        return Corredor_Urbano
-    # elif proceso == 'proceso3':
-    #     return Fase3
-    return None
+# ========== MODELOS ==========
+class Parque_Urbano(db.Model):
+    id_Fase = db.Column(db.Integer, primary_key=True)
+    nombre_fase = db.Column(db.String(100), nullable=False)
+    tipo_fase = db.Column(db.String(100), nullable=False)
+    descripcion = db.Column(db.Text, nullable=False)
+    indicador = db.Column(db.String(100), nullable=False)
+    nombre_revisor = db.Column(db.String(100), nullable=False)
+    area_verde = db.Column(db.Integer, nullable=False)
+    area_total = db.Column(db.Integer, nullable=False)
+    porcentaje_indicador = db.Column(db.Integer, nullable=False)
+    viabilidad = db.Column(db.Text, nullable=False)
+    fecha_actualizacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time, onupdate=get_colombian_time)
+    fecha_creacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time)
 
-# Rutas CRUD mejoradas
-# Ruta para la página principal/index
+    def calcular_porcentaje(self):
+        if self.area_total > 0:
+            return round((self.area_verde / self.area_total) * 100, 2)
+        return 0
+
+    def calcular_viabilidad(self):
+        porcentaje = self.calcular_porcentaje() / 100
+        if porcentaje >= 0.7:
+            return "Viable ✅"
+        elif porcentaje >= 0.4:
+            return "Medianamente viable ⚠️"
+        return "No viable ❌"
+
+    def save(self, db):
+        self.porcentaje_indicador = self.calcular_porcentaje()
+        self.viabilidad = self.calcular_viabilidad()
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def to_dict(self):
+        return {
+            'id_Fase': self.id_Fase,
+            'nombre_fase': self.nombre_fase,
+            'tipo_fase': self.tipo_fase,
+            'descripcion': self.descripcion,
+            'indicador': self.indicador,
+            'nombre_revisor': self.nombre_revisor,
+            'area_verde': self.area_verde,
+            'area_total': self.area_total,
+            'porcentaje_indicador': self.porcentaje_indicador,
+            'viabilidad': self.viabilidad,
+            'fecha_actualizacion': self.fecha_actualizacion.strftime('%Y-%m-%d %H:%M:%S %Z'),
+            'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S %Z')
+        }
+
+
+class Corredor_Urbano(Parque_Urbano):
+    __tablename__ = 'corredor_urbano'
+    id_Fase = db.Column(db.Integer, db.ForeignKey('parque__urbano.id_Fase'), primary_key=True)
+
+# ========== RUTAS PRINCIPALES ==========
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -184,65 +119,38 @@ def home():
 @app.route('/diagnostico/<proceso>')
 def diagnostico(proceso):
     if proceso not in ['Parques_Urbanos', 'Corredores_Ecologicos']:
-        abort(404)  # Regresa error 404 si hay un proceso invalido
-        
-    modelo = get_model_by_process(proceso)
+        abort(404)
     
+    modelo = get_model_by_process(proceso)
     if not modelo:
         flash('Proceso no válido', 'danger')
         return redirect(url_for('home'))
-    
+
     try:
-        # Obtener las fases del modelo correspondiente
         fases = modelo.query.all()
-        return render_template('proceso/diagnostico.html', 
-                                fases=fases, 
-                                now=get_colombian_time(),
-                                Proceso=proceso)
+        return render_template('proceso/diagnostico.html', fases=fases, now=get_colombian_time(), Proceso=proceso)
     except Exception as e:
-        import traceback
-        traceback.print_exc()
         flash(f'Error al cargar las fases: {str(e)}', 'danger')
-        return render_template('proceso/diagnostico.html', 
-                                fases=[], 
-                                now=get_colombian_time(),
-                                Proceso=proceso)
+        return render_template('proceso/diagnostico.html', fases=[], now=get_colombian_time(), Proceso=proceso)
 
 @app.route('/Parques_Urbanos')
 def Parques_Urbanos():
     try:
         fases = Parque_Urbano.query.all()
-        return render_template('proceso/Parques_Urbanos.html', 
-                                fases=fases, 
-                                now=datetime.now(), 
-                                Proceso="Parques_Urbanos")
+        return render_template('proceso/Parques_Urbanos.html', fases=fases, now=datetime.now(), Proceso="Parques_Urbanos")
     except Exception as e:
-        import traceback
-        traceback.print_exc()  # This will print the full error traceback
         flash(f'Error al cargar las fases: {str(e)}', 'danger')
-        return render_template('proceso/Parques_Urbanos.html', 
-                                fases=[], 
-                                now=datetime.now(), 
-                                Proceso="Parques_Urbanos")
+        return render_template('proceso/Parques_Urbanos.html', fases=[], now=datetime.now(), Proceso="Parques_Urbanos")
 
 @app.route('/Corredores_Ecologicos')
 def Corredores_Ecologicos():
     try:
         fases = Corredor_Urbano.query.all()
-        return render_template('proceso/Corredores_Ecologicos.html', 
-                                fases=fases, 
-                                now=datetime.now(), 
-                                Proceso="Corredores_Ecologicos")
+        return render_template('proceso/Corredores_Ecologicos.html', fases=fases, now=datetime.now(), Proceso="Corredores_Ecologicos")
     except Exception as e:
-        import traceback
-        traceback.print_exc()  # This will print the full error traceback
         flash(f'Error al cargar las fases: {str(e)}', 'danger')
-        return render_template('proceso/Corredores_Ecologicos.html', 
-                                fases=[], 
-                                now=datetime.now(), 
-                                Proceso="Corredores_Ecologicos")
+        return render_template('proceso/Corredores_Ecologicos.html', fases=[], now=datetime.now(), Proceso="Corredores_Ecologicos")
 
-    
 @app.route('/resultado/<proceso>')
 def resultado(proceso):
     try:
@@ -251,6 +159,7 @@ def resultado(proceso):
         flash(f'Error al cargar los resultados: {str(e)}', 'danger')
         return render_template('index.html', now=datetime.now())
 
+# ========== RUTAS DE EJEMPLOS Y OTRAS ==========
 @app.route('/ejemplosParques')
 def ejemploParque():
     try:
@@ -266,72 +175,63 @@ def ejemploCorredor():
     except Exception as e:
         flash(f'Error al cargar los ejemplos: {str(e)}', 'danger')
         return redirect(url_for('home'))
+
 @app.route('/aboutUs')
 def about():
     try:
         return render_template('about_us.html', now=datetime.now())
     except Exception as e:
-        flash(f'Error al cargar la pagina: {str(e)}', 'danger')
+        flash(f'Error al cargar la página: {str(e)}', 'danger')
         return redirect(url_for('home'))
+
+def safe_int(value, default=0):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
+def construir_fase_from_form(model_class, form):
+    return model_class(
+        nombre_fase=form.get('nombre_fase', '').strip(),
+        tipo_fase=form.get('tipo_fase', '').strip(),
+        descripcion=form.get('descripcion', '').strip(),
+        indicador=form.get('indicador', '').strip(),
+        nombre_revisor=form.get('nombre_revisor', '').strip(),
+        area_verde=safe_int(form.get('area_verde')),
+        area_total=safe_int(form.get('area_total')),
+        porcentaje_indicador=safe_int(form.get('porcentaje_indicador')),
+        viabilidad=form.get('viabilidad', '').strip()
+    )
 
 @app.route('/crear/<proceso>', methods=['GET', 'POST'])
 @handle_errors
 def crear(proceso):
-    """
-    Crea una nueva fase en el proceso especificado.
-    :param proceso: Identificador del proceso ('Parques_Urbanos', 'Corredores_Ecologicos', 'proceso3')
-    """
-    # Valida que el proceso sea válido
     if proceso not in ['Parques_Urbanos', 'Corredores_Ecologicos']:
         flash('Proceso no válido', 'danger')
         return redirect(url_for('home'))
-    
+
     if request.method == 'POST':
         try:
-            # Debugging: Print out the form data
             print("Form Data:", request.form)
 
-            if proceso == 'Parques_Urbanos':
-                nueva_fase = Parque_Urbano(
-                    nombre_fase=request.form.get('nombre_fase', '').strip(),
-                    tipo_fase=request.form.get('tipo_fase', '').strip(),
-                    descripcion=request.form.get('descripcion', '').strip(),
-                    indicador=request.form.get('indicador', '').strip(),
-                    nombre_revisor=request.form.get('nombre_revisor', '').strip(),
-                    area_verde=int(request.form.get('area_verde', 0)),
-                    area_total=int(request.form.get('area_total', 0)),
-                    porcentaje_indicador=int(request.form.get('porcentaje_indicador', 0)),
-                    viabilidad=request.form.get('viabilidad', '').strip()
-                )
-                nueva_fase.save(db)
-                flash('Fase creada con éxito', 'success')
-                return redirect(url_for('Parques_Urbanos'))
-            
-            elif proceso == 'Corredores_Ecologicos':
-                nueva_fase = Corredor_Urbano(
-                    nombre_fase=request.form.get('nombre_fase', '').strip(),
-                    tipo_fase=request.form.get('tipo_fase', '').strip(),
-                    descripcion=request.form.get('descripcion', '').strip(),
-                    indicador=request.form.get('indicador', '').strip(),  # Changed from 'indicadores'
-                    nombre_revisor=request.form.get('nombre_revisor', '').strip(),
-                    area_verde=int(request.form.get('area_verde', 0)),
-                    area_total=int(request.form.get('area_total', 0)),
-                    porcentaje_indicador=int(request.form.get('porcentaje_indicador', 0)),
-                    viabilidad=request.form.get('viabilidad', '').strip()
-                )
-                nueva_fase.save(db)
-                flash('Fase creada con éxito', 'success')
-                return redirect(url_for('Corredores_Ecologicos'))
+            modelo = get_model_by_process(proceso)
+            if not modelo:
+                flash('Modelo no encontrado para el proceso', 'danger')
+                return redirect(url_for(proceso))
+
+            nueva_fase = construir_fase_from_form(modelo, request.form)
+            nueva_fase.save(db)
+
+            flash('Fase creada con éxito', 'success')
+            return redirect(url_for(proceso))
 
         except Exception as e:
             db.session.rollback()
-            # More detailed error logging
             import traceback
             traceback.print_exc()
             flash(f'Error al crear la fase: {str(e)}', 'danger')
             return redirect(url_for(proceso))
-    
-    # Si es GET, mostrar el formulario
+
     modelo = get_model_by_process(proceso)
     fases = modelo.query.all() if modelo else []
     return render_template(f'proceso/{proceso}.html', fases=fases, now=get_colombian_time(), Proceso=proceso)
@@ -349,18 +249,15 @@ def editar(proceso, id):
     
     if request.method == 'POST':
         try:
-            # Validación de campos
             fase.nombre_fase = request.form.get('nombre_fase', '').strip() or fase.nombre_fase
             fase.tipo_fase = request.form.get('tipo_fase', '').strip() or fase.tipo_fase
             fase.descripcion = request.form.get('descripcion', '').strip() or fase.descripcion
             fase.indicador = request.form.get('indicador', '').strip() or fase.indicador
             fase.nombre_revisor = request.form.get('nombre_revisor', '').strip() or fase.nombre_revisor
             
-            # Conversión segura de campos numéricos
-            fase.area_verde = int(request.form.get('area_verde', fase.area_verde))
-            fase.area_total = int(request.form.get('area_total', fase.area_total))
-            
-            # Recalcular porcentaje y viabilidad
+            fase.area_verde = safe_int(request.form.get('area_verde', fase.area_verde))
+            fase.area_total = safe_int(request.form.get('area_total', fase.area_total))
+
             fase.porcentaje_indicador = fase.calcular_porcentaje()
             fase.viabilidad = fase.calcular_viabilidad()
 
@@ -369,7 +266,6 @@ def editar(proceso, id):
             return redirect(url_for(proceso))
         
         except ValueError as e:
-            # Manejar errores de conversión de tipos
             flash(f'Error en los datos: {str(e)}', 'danger')
             return redirect(url_for(proceso))
         
@@ -378,9 +274,23 @@ def editar(proceso, id):
             flash(f'Error al actualizar la fase: {str(e)}', 'danger')
             return redirect(url_for(proceso))
     
-    # Si es GET, mostrar el formulario
     fases = modelo.query.all()
     return render_template(f'proceso/{proceso}.html', fase=fase, fases=fases, now=get_colombian_time(), Proceso=proceso)
+
+@app.route('/ver/<proceso>/<int:id>', methods=['GET'])
+@handle_errors
+def ver(proceso, id):
+    modelo = get_model_by_process(proceso)
+    
+    if not modelo:
+        flash('Proceso no válido', 'danger')
+        return redirect(url_for('home'))
+
+    fase = modelo.query.get_or_404(id)
+    fases = modelo.query.all()
+    
+    return render_template(f'proceso/{proceso}.html', fase=fase, fases=fases, now=get_colombian_time(), Proceso=proceso)
+
 
 @app.route('/eliminar/<proceso>/<int:id>', methods=['POST'])
 @handle_errors
@@ -409,7 +319,7 @@ def eliminar(proceso, id):
         db.session.rollback()
         flash(f'Error al eliminar la fase: {str(e)}', 'danger')
         return redirect(url_for(proceso))
-
+    
 
 # Añadir estas importaciones en app.py:
 import matplotlib
@@ -976,6 +886,23 @@ def exportar_excel(proceso):
         flash(f'Error al exportar a Excel: {str(e)}', 'danger')
         return redirect(url_for(proceso))
 
+
+@app.route('/descargar_excel/<proceso>')
+def descargar_excel(proceso):
+    if proceso == 'Parque_Urbano':
+        excel_path = os.path.join(app.static_folder, 'excel', 'INDICADORESPARQUESURBANOS.xlsx')
+        return send_file(excel_path, as_attachment=True, download_name='Parque_Urbano.xlsx')
+    elif proceso == 'Corredor_Urbano':
+        excel_path = os.path.join(app.static_folder, 'excel', 'INDICADORESCORREDORESECOLOGICOS.xlsx')
+        return send_file(excel_path, as_attachment=True, download_name='Corredor_Urbano.xlsx')
+    else:
+        return f"No se encontró archivo Excel para el proceso: {proceso}", 404
+
+import locale
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
+# locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
+
+
 # Manejo de errores mejorado
 @app.errorhandler(404)
 def not_found_error(error):
@@ -990,6 +917,5 @@ def internal_error(error):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Crea todas las tablas en la BD si no existen
-    
-    app.run(debug=True)  # Inicia el servidor en modo debug
-    
+    app.run(port = 5000,  debug=True) # Inicia el servidor en modo debug
+

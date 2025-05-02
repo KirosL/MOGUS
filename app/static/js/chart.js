@@ -3,41 +3,52 @@ Chart.register(ChartDataLabels);
 
 document.addEventListener("DOMContentLoaded", function() {
 
+    // ================================
+    // 1. VARIABLES DE DATOS
+    // ================================
+
     const nombresFases = [
         {% for fase in fases %}
             "{{ fase.nombre_fase }}"{% if not loop.last %},{% endif %}
         {% endfor %}
-        ];
-        
-        const porcentajeIndicador = [
+    ];
+
+    const porcentajeIndicador = [
         {% for fase in fases %}
             {{ fase.porcentaje_indicador }}{% if not loop.last %},{% endif %}
         {% endfor %}
-        ];
-        
-        const areasVerdes = [
+    ];
+
+    const areasVerdes = [
         {% for fase in fases %}
             {{ fase.area_verde }}{% if not loop.last %},{% endif %}
         {% endfor %}
-        ];
-        
-        const areasTotal = [
+    ];
+
+    const areasTotal = [
         {% for fase in fases %}
             {{ fase.area_total }}{% if not loop.last %},{% endif %}
         {% endfor %}
-        ];
-        
-        const viabilidad = [
+    ];
+
+    const viabilidad = [
         {% for fase in fases %}
             "{{ fase.viabilidad }}"{% if not loop.last %},{% endif %}
         {% endfor %}
-        ];
-    
-    const conteoViable = viabilidad.filter(v => v.includes("Viable ✅")).length;
-    const conteoMediano = viabilidad.filter(v => v.includes("Medianamente viable ⚠️")).length;
-    const conteoNoViable = viabilidad.filter(v => v.includes("No viable ❌")).length;
-    
-    // 1. Gráfico de Barras mejorado
+    ];
+
+    // ================================
+    // 2. CÁLCULO DE VIABILIDADES
+    // ================================
+
+    const conteoViable = viabilidad.filter(v => v.includes("Viable ✅")).length,
+          conteoMediano = viabilidad.filter(v => v.includes("Medianamente viable ⚠️")).length,
+          conteoNoViable = viabilidad.filter(v => v.includes("No viable ❌")).length;
+
+    // ================================
+    // 3. GRÁFICO DE BARRAS (Indicador)
+    // ================================
+
     new Chart(document.getElementById('graficoIndicador'), {
         type: 'bar',
         data: {
@@ -66,19 +77,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 2. Gráfico de Donut (Viabilidad)
+    // ================================
+    // 4. GRÁFICO DONUT (Viabilidad)
+    // ================================
+
     new Chart(document.getElementById('graficoPie'), {
         type: 'doughnut',
         data: {
             labels: ['Viable', 'Medianamente viable', 'No viable'],
             datasets: [{
                 data: [conteoViable, conteoMediano, conteoNoViable],
-                backgroundColor: ['rgba(75, 192, 75, 0.7)', 'rgba(255, 206, 86, 0.7)', 'rgba(255, 99, 132, 0.7)']
+                backgroundColor: [
+                    'rgba(75, 192, 75, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ]
             }]
         }
     });
 
-    // 3. Gráfico de Barras Apiladas (Área Verde vs Área Total)
+    // ================================
+    // 5. GRÁFICO DE BARRAS APILADAS (Área Verde vs Total)
+    // ================================
     new Chart(document.getElementById('graficoArea'), {
         type: 'bar',
         data: {
@@ -94,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 4. Gráfico de Radar (Sostenibilidad)
+    // 6. Gráfico de Radar (Sostenibilidad)
     new Chart(document.getElementById('graficoRadar'), {
         type: 'radar',
         data: {
@@ -108,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 5. Gráfico de Dispersión (Área Verde vs Indicador)
+    // 7. Gráfico de Dispersión (Área Verde vs Indicador)
     new Chart(document.getElementById('graficoDispersion'), {
         type: 'scatter',
         data: {
@@ -125,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-    // 6. Gráfico de Líneas (Evolución del Indicador a lo Largo de las Fases)
+    // 8. Gráfico de Líneas (Evolución del Indicador a lo Largo de las Fases)
     new Chart(document.getElementById('graficoLineas'), {
         type: 'line',
         data: {
