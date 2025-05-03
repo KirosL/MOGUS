@@ -5,14 +5,11 @@ from datetime import datetime
 import pytz
 import pandas as pd
 import os
-import io
 import tempfile
 from functools import wraps
 from werkzeug.security import generate_password_hash
-
 # Para exportar PDF
 from weasyprint import HTML, CSS
-
 # Para gráficos
 import matplotlib
 matplotlib.use('Agg')
@@ -21,6 +18,11 @@ import numpy as np
 import base64
 from io import BytesIO
 
+
+from dotenv import load_dotenv
+# Cargar las variables del archivo .env
+load_dotenv()
+
 def crear_app():
     # ========== CONFIGURACIÓN DE LA APP ==========
     app = Flask(__name__, static_folder='../static', template_folder='../templates')
@@ -28,6 +30,7 @@ def crear_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///procesos.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
+    
 
     # ========== FUNCIONES AUXILIARES ==========
     def get_colombian_time():
@@ -920,4 +923,3 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Crea las tablas en la base de datos
     app.run(port=5000, debug=True)  # Inicia la aplicación Flask en el puerto 5000 con modo debug activado
-
