@@ -904,8 +904,8 @@ def crear_app():
         else:
             return f"No se encontró archivo Excel para el proceso: {proceso}", 404
 
-    import locale
-    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
+    #import locale
+    #locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
     # locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
 
 
