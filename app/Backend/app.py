@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import pytz
 import pandas as pd
-import os
 import tempfile
 from functools import wraps
 from werkzeug.security import generate_password_hash
@@ -19,14 +18,18 @@ import base64
 from io import BytesIO
 
 
+
 from dotenv import load_dotenv
-# Cargar las variables del archivo .env
-load_dotenv()
+
+load_dotenv()  # Carga las variables del archivo .env
+
+
 
 def crear_app():
+    import os
     # ========== CONFIGURACIÓN DE LA APP ==========
     app = Flask(__name__, static_folder='../static', template_folder='../templates')
-    app.secret_key = os.environ.get('SECRET_KEY') or os.urandom(24)
+    app.secret_key = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///procesos.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
