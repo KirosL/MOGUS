@@ -916,6 +916,5 @@ def internal_error(error):
 # Punto de entrada de la aplicación
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Crea todas las tablas en la BD si no existen
-    app.run(port = 5000,  debug=True) # Inicia el servidor en modo debug
-
+        db.create_all()
+    app.run(port=5000, debug=True)
