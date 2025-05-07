@@ -64,7 +64,7 @@ def crear_app():
     # Obtener la hora colombiana
 
     class Parque_Urbano(db.Model):
-        __tablename__ = 'parque_urbano'  # Nombre de la tabla en MySQL
+        __tablename__ = 'Parque_Urbano'  # Nombre de la tabla en MySQL
         id_Fase = db.Column(db.Integer, primary_key=True, autoincrement=True)
         nombre_fase = db.Column(db.String(100), nullable=False)
         tipo_fase = db.Column(db.String(100), nullable=False)
@@ -116,7 +116,7 @@ def crear_app():
 
 
     class Corredor_Urbano(db.Model):
-        __tablename__ = 'corredor_urbano'  # Nombre de la tabla en MySQL
+        __tablename__ = 'Corredor_Urbano'  # Nombre de la tabla en MySQL
 
         id_Fase = db.Column(db.Integer, primary_key=True, autoincrement=True)
         nombre_fase = db.Column(db.String(100), nullable=False)
