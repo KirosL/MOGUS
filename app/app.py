@@ -32,8 +32,6 @@ def crear_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     # Inicializar SQLAlchemy
     db = SQLAlchemy(app)
     # ========== FUNCIONES AUXILIARES ==========
@@ -969,10 +967,6 @@ def crear_app():
             return send_file(excel_path, as_attachment=True, download_name='Corredor_Urbano.xlsx')
         else:
             return f"No se encontró archivo Excel para el proceso: {proceso}", 404
-
-    import locale
-    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
-    # locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
 
 
     # Manejo de errores mejorado
