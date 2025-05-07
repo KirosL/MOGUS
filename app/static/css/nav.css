@@ -45,7 +45,7 @@ h1 {
 .description {
     color: #fff;
     font-size: 25px;
-    letter-spacing: px;
+    letter-spacing: 2px;
     text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
     max-width: 80%;
     margin: 0 auto;
@@ -85,11 +85,12 @@ h1 {
     align-items: center; /* Centra verticalmente */
 }
 
+/* Estilos consolidados para .navbar-logo */
 .navbar-logo {
-    max-height: 80px; /* Aumentado en 20px desde los 50px anteriores */
+    max-height: 80px;
     width: auto;
-    margin: 0px; /* Elimina margen */
-    padding: 0; /* Pequeño padding vertical y solo a la izquierda */
+    margin: 0;
+    padding: 0;
 }
 
 /* Estilos para los enlaces de navegación */
@@ -377,7 +378,7 @@ h1 {
 /* Ajustes responsive */
 @media(max-width: 991px){
     .navbar-logo {
-        max-height: -5px; /* Aumentado en 20px desde los 35px anteriores */
+        max-height: 45px; /* Aumentado en 20px desde los 35px anteriores */
         padding-left: 0px; /* Asegura que siga pegado a la izquierda en móviles */
     }
 }

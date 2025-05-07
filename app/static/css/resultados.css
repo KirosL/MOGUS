@@ -330,3 +330,45 @@ p {
         font-size: 18px;
     }
 }
+
+.navbar{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0; /* Elimina el padding del navbar */
+}
+
+/* Ajustes para el contenedor principal */
+.navbar .container {
+    padding-left: 0; /* Elimina el padding izquierdo */
+}
+
+/* Ajustes para el contenedor del logo */
+.navbar-brand {
+    padding: 0; /* Elimina el padding del contenedor del logo */
+    margin: 0; /* Elimina el margen del contenedor del logo */
+    display: flex; /* Usa flexbox para mejor control */
+    align-items: center; /* Centra verticalmente */
+}
+
+/* Estilos consolidados para .navbar-logo */
+.navbar-logo {
+    max-height: 80px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para los enlaces de navegación */
+.navbar .nav-link {
+    color: #006400;
+    font-weight: 500;
+    padding-top: 20px; /* Ajustado para alinearse con el logo más grande */
+    padding-bottom: 20px;
+}
+
+.navbar .nav-link:hover {
+    color: #004d00;
+}
