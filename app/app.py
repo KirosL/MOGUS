@@ -1,10 +1,11 @@
 # ========== IMPORTACIONES ==========
 from flask import Flask, abort, render_template, request, redirect, url_for, flash, session, send_file
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy  # Asegúrate de tener esta importación
+from bson.objectid import ObjectId
 from datetime import datetime
 import pytz
 import pandas as pd
-import tempfile
+from sqlalchemy import inspect
 from functools import wraps
 from werkzeug.security import generate_password_hash
 # Para exportar PDF
@@ -16,26 +17,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 import base64
 from io import BytesIO
-
-
-
+import io
+import os
 from dotenv import load_dotenv
 
 load_dotenv()  # Carga las variables del archivo .env
 
-
-
 def crear_app():
-    import os
     # ========== CONFIGURACIÓN DE LA APP ==========
-    app = Flask(__name__, static_folder='../static', template_folder='../templates')
-    app.secret_key = os.environ.get('SECRET_KEY') 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///procesos.db'
+    app = Flask(__name__, static_folder='static', template_folder='templates')
+    app.config['SECRET_KEY'] = 'MOGUS_VERDE'
+    # Configuración de MySQL en lugar de SQLite
+    # Formato: mysql+pymysql://username:password@host:port/database_name
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db = SQLAlchemy(app)
-    
 
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Inicializar SQLAlchemy
+    db = SQLAlchemy(app)
     # ========== FUNCIONES AUXILIARES ==========
     def get_colombian_time():
         """Retorna la hora actual en la zona horaria de Colombia."""
@@ -63,8 +63,11 @@ def crear_app():
         return decorated_function
 
     # ========== MODELOS ==========
+    # Obtener la hora colombiana
+
     class Parque_Urbano(db.Model):
-        id_Fase = db.Column(db.Integer, primary_key=True)
+        __tablename__ = 'parque_urbano'  # Nombre de la tabla en MySQL
+        id_Fase = db.Column(db.Integer, primary_key=True, autoincrement=True)
         nombre_fase = db.Column(db.String(100), nullable=False)
         tipo_fase = db.Column(db.String(100), nullable=False)
         descripcion = db.Column(db.Text, nullable=False)
@@ -72,10 +75,10 @@ def crear_app():
         nombre_revisor = db.Column(db.String(100), nullable=False)
         area_verde = db.Column(db.Integer, nullable=False)
         area_total = db.Column(db.Integer, nullable=False)
-        porcentaje_indicador = db.Column(db.Integer, nullable=False)
+        porcentaje_indicador = db.Column(db.Float, nullable=False)  # Cambiado a Float para MySQL
         viabilidad = db.Column(db.Text, nullable=False)
-        fecha_actualizacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time, onupdate=get_colombian_time)
-        fecha_creacion = db.Column(db.DateTime(timezone=True), default=get_colombian_time)
+        fecha_actualizacion = db.Column(db.DateTime, default=get_colombian_time, onupdate=get_colombian_time)
+        fecha_creacion = db.Column(db.DateTime, default=get_colombian_time)
 
         def calcular_porcentaje(self):
             if self.area_total > 0:
@@ -114,10 +117,80 @@ def crear_app():
             }
 
 
-    class Corredor_Urbano(Parque_Urbano):
-        __tablename__ = 'corredor_urbano'
-        id_Fase = db.Column(db.Integer, db.ForeignKey('parque__urbano.id_Fase'), primary_key=True)
+    class Corredor_Urbano(db.Model):
+        __tablename__ = 'corredor_urbano'  # Nombre de la tabla en MySQL
 
+        id_Fase = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        nombre_fase = db.Column(db.String(100), nullable=False)
+        tipo_fase = db.Column(db.String(100), nullable=False)
+        descripcion = db.Column(db.Text, nullable=False)
+        indicador = db.Column(db.String(100), nullable=False)
+        nombre_revisor = db.Column(db.String(100), nullable=False)
+        area_verde = db.Column(db.Integer, nullable=False)
+        area_total = db.Column(db.Integer, nullable=False)
+        porcentaje_indicador = db.Column(db.Float, nullable=False)
+        viabilidad = db.Column(db.Text, nullable=False)
+        fecha_actualizacion = db.Column(db.DateTime, default=get_colombian_time, onupdate=get_colombian_time)
+        fecha_creacion = db.Column(db.DateTime, default=get_colombian_time)
+
+        def calcular_porcentaje(self):
+            if self.area_total > 0:
+                return round((self.area_verde / self.area_total) * 100, 2)
+            return 0
+
+        def calcular_viabilidad(self):
+            porcentaje = self.calcular_porcentaje() / 100
+            if porcentaje >= 0.7:
+                return "Viable ✅"
+            elif porcentaje >= 0.4:
+                return "Medianamente viable ⚠️"
+            return "No viable ❌"
+        
+        def save(self, db):
+            self.porcentaje_indicador = self.calcular_porcentaje()
+            self.viabilidad = self.calcular_viabilidad()
+            db.session.add(self)
+            db.session.commit()
+            return self
+
+        def to_dict(self):
+            return {
+                'id_Fase': self.id_Fase,
+                'nombre_fase': self.nombre_fase,
+                'tipo_fase': self.tipo_fase,
+                'descripcion': self.descripcion,
+                'indicador': self.indicador,
+                'nombre_revisor': self.nombre_revisor,
+                'area_verde': self.area_verde,
+                'area_total': self.area_total,
+                'porcentaje_indicador': self.porcentaje_indicador,
+                'viabilidad': self.viabilidad,
+                'fecha_actualizacion': self.fecha_actualizacion.strftime('%Y-%m-%d %H:%M:%S %Z'),
+                'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S %Z')
+            }
+        
+
+    # Función para verificar las tablas
+    def check_tables():
+        # Usamos inspect para obtener las tablas de la base de datos
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        
+        print("Tablas en la base de datos:", tables)
+        if 'parque_urbano' in tables:
+            print("La tabla 'parque_urbano' existe.")
+        else:
+            print("La tabla 'parque_urbano' no existe.")
+
+        if 'corredor_urbano' in tables:
+            print("La tabla 'corredor_urbano' existe.")
+        else:
+            print("La tabla 'corredor_urbano' no existe.")
+            
+            
+    # Llamar a la función para comprobar las tablas
+    with app.app_context():
+        check_tables()
     # ========== RUTAS PRINCIPALES ==========
     @app.route('/')
     def home():
@@ -326,14 +399,6 @@ def crear_app():
             db.session.rollback()
             flash(f'Error al eliminar la fase: {str(e)}', 'danger')
             return redirect(url_for(proceso))
-        
-
-    # Añadir estas importaciones en app.py:
-    import matplotlib
-    matplotlib.use('Agg')  # Para usar matplotlib sin un servidor gráfico
-    import matplotlib.pyplot as plt
-    import numpy as np
-    import os
 
     def generar_graficos_base64(fases):
         """Genera gráficos y devuelve sus representaciones base64"""
@@ -492,9 +557,9 @@ def crear_app():
             # Rutas de las imágenes
             imagenes = {
                 "logo_base64": os.path.join('app', 'static', 'img', 'Mogus.png'),
-                "boceto21_base64": os.path.join('app', 'static', 'img', 'BOCETO 2.1.jpg'),
-                "boceto13_base64": os.path.join('app', 'static', 'img', 'BOCETO 1.3.jpg'),
-                "boceto12_base64": os.path.join('app', 'static', 'img', 'BOCETO 1.2.jpg')
+                "boceto21_base64": os.path.join('app', 'static', 'img', 'INDICES.gif'),
+                "boceto13_base64": os.path.join('app', 'static', 'img', 'MEDIANA-MENTETE-VIABLE.gif'),
+                "boceto12_base64": os.path.join('app', 'static', 'img', 'NO-VIABLE.gif')
             }
             # Cargar imágenes en base64
             imagenes_base64 = {}
@@ -905,8 +970,8 @@ def crear_app():
         else:
             return f"No se encontró archivo Excel para el proceso: {proceso}", 404
 
-    #import locale
-    #locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
+    import locale
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')  # Para Linux/macOS
     # locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252')  # Para Windows
 
 
@@ -919,11 +984,12 @@ def crear_app():
     def internal_error(error):
         db.session.rollback()
         return render_template('errors/500.html'), 500
-    
+        
     return app
+
+
 # Punto de entrada de la aplicación
 if __name__ == '__main__':
     app = crear_app()  # Creamos la app usando la función crear_app
-    with app.app_context():
-        db.create_all()  # Crea las tablas en la base de datos
-    app.run(port=5000, debug=True)  # Inicia la aplicación Flask en el puerto 5000 con modo debug activado
+    
+    app.run(port=5000, debug=True)  # Inicia la aplicación Flask en el puerto 5000 con modo debug activado o 5000 con modo debug activado
