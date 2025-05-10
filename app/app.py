@@ -57,7 +57,7 @@ def crear_app():
             except Exception as e:
                 db.session.rollback()
                 flash(f'Error: {str(e)}', 'danger')
-                return redirect(url_for('home'))
+                return redirect(url_for('index'))
         return decorated_function
 
     # ========== MODELOS ==========
@@ -190,9 +190,17 @@ def crear_app():
     with app.app_context():
         check_tables()
     # ========== RUTAS PRINCIPALES ==========
-    @app.route('/')
+    @app.route('/nav')
     def home():
-        return render_template('index.html')
+        return render_template('nav.html')
+    
+    @app.route('/')
+    def index():
+        try:
+            return render_template('index.html', now=datetime.now())
+        except Exception as e:
+            flash(f'Error al cargar la página: {str(e)}', 'danger')
+            return redirect(url_for('index'))
 
     @app.route('/diagnostico/<proceso>')
     def diagnostico(proceso):
@@ -202,7 +210,7 @@ def crear_app():
         modelo = get_model_by_process(proceso)
         if not modelo:
             flash('Proceso no válido', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
         try:
             fases = modelo.query.all()
@@ -244,7 +252,7 @@ def crear_app():
             return render_template('ejemplo/ejemplo_Parques.html', now=datetime.now(), pagina_activa='parques')
         except Exception as e:
             flash(f'Error al cargar los ejemplos: {str(e)}', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
     @app.route('/ejemplosCorredores')
     def ejemploCorredor():
@@ -252,7 +260,7 @@ def crear_app():
             return render_template('ejemplo/ejemplo_Corredores.html', now=datetime.now(), pagina_activa='corredores')
         except Exception as e:
             flash(f'Error al cargar los ejemplos: {str(e)}', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
     @app.route('/aboutUs')
     def about():
@@ -260,7 +268,7 @@ def crear_app():
             return render_template('about_us.html', now=datetime.now())
         except Exception as e:
             flash(f'Error al cargar la página: {str(e)}', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
     def safe_int(value, default=0):
         try:
@@ -286,7 +294,7 @@ def crear_app():
     def crear(proceso):
         if proceso not in ['Parques_Urbanos', 'Corredores_Ecologicos']:
             flash('Proceso no válido', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
         if request.method == 'POST':
             try:
@@ -321,7 +329,7 @@ def crear_app():
         
         if not modelo:
             flash('Proceso no válido', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         
         fase = modelo.query.get_or_404(id)
         
@@ -362,7 +370,7 @@ def crear_app():
         
         if not modelo:
             flash('Proceso no válido', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
 
         fase = modelo.query.get_or_404(id)
         fases = modelo.query.all()
@@ -382,7 +390,7 @@ def crear_app():
         
         if not modelo:
             flash('Proceso no válido', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         
         try:
             fase = modelo.query.get_or_404(id)
@@ -542,7 +550,7 @@ def crear_app():
         
         if not modelo:
             flash('Proceso no válido para generación de PDF', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         
         try:
             # Obtener todas las fases del proceso
@@ -811,7 +819,7 @@ def crear_app():
         
         if not modelo:
             flash('Proceso no válido para exportación', 'danger')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         
         try:
             # Función para calcular viabilidad
