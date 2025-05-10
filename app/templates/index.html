@@ -1,7 +1,8 @@
-{% extends "nav.html" %}
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOGUS</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/Mogus.png') }}" />
@@ -9,12 +10,13 @@
     {% block extra_css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=lightbulb" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/diagrama.css') }}">
     {% endblock %}
-    </head>
+</head>
 <body>
-    {% block content %}
+    {% block banner_section %}
     <section>
         <img class="bg-image" src="{{ url_for('static', filename='img/3.png') }}" alt="MOGUS">
         <div class="container">
@@ -33,6 +35,39 @@
         </div>
         
     </section>
+    {% endblock %}
+    
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='img/Mogus.png') }}" alt="Logo" class="navbar-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li >
+                        <a id="proceso1" class="nav-link active" href="{{ url_for('Parques_Urbanos') }}"> Parques Urbanos </a>
+                    </li>
+                    
+                    <li>
+                        <a id="proceso2" class="nav-link active" href="{{ url_for('Corredores_Ecologicos') }}"> Corredores Ecológicos </a>
+                    </li>
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('ejemploParque') }}">Ejemplos Destacados</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('about') }}"> About us </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block diagram_section %}
+    
     
     <div class="container py-5">
         <!-- Titulo Inicio -->
@@ -42,6 +77,8 @@
                 <p class="lead">Sistema de análisis y evaluación en el espacio urbano</p>
             </div>
         </div>
+
+        
 
         <!-- Tarjeta principal de explicación -->
         <div class="row mb-5">
@@ -468,10 +505,38 @@
     </footer>
     {% endblock %}
 
-
+    
+    {% block content %}{% endblock %}
     {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+
+            // Referencias a los módulos
+            const introductionModule = document.getElementById('introductionModule');
+            // Referencias a los botones de navegación
+            const navToIntroduction = document.getElementById('navToIntroduction');
+        
+            // Función para cambiar entre módulos
+            function showModule(module) {
+                // Ocultar todos los módulos
+                [introductionModule].forEach(mod => {
+                    mod.classList.remove('active');
+                });
+                // Mostrar el módulo seleccionado
+                module.classList.add('active');
+            }
+            
+            // Eventos para los botones de navegación
+            navToIntroduction.addEventListener('click', function() {
+                showModule(introductionModule);
+            });
+            
+        
+        });
+    </script>
     {% endblock %}
 </body>
 </html>
