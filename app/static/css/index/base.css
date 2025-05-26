@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --mogus-dark-green: #006400;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Urbanist', sans-serif;
+}
+
+/* Utilities */
+.green-divider {
+    height: 3px;
+    background-color: var(--mogus-dark-green);
+    opacity: 0.5;
+    border-radius: 2px;
+    margin: 15px 0;
+}
+
+.header-tab {
+    background-color: var(--mogus-dark-green);
+    color: white;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 18px;
+}

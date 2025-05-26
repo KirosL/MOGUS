@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tarjeta.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index/nav.css') }}">
     {% endblock %}
 </head>
 
@@ -19,122 +19,19 @@
     {% block diagram_section %}{% endblock %}
     {% block content %}
     <div class="module-section" id="diagnosticoModule">
-        
-    {% if Proceso|lower == 'parques_urbanos' %}
-        <div class="container">
-        
-            <h2 class="module-title first">Diagnóstico - Parques Urbanos</h2>
-            <p>
-                La viabilidad de una intervención urbana puede clasificarse como viable, cuando las condiciones permiten su ejecución sin mayores
-                obstáculos; medianamente viable, cuando es posible realizarla con algunos ajustes o mejoras; y no viable,
-                cuando existen restricciones que impiden su implementación. Esta clasificación permite priorizar acciones de manera eficiente.
-                <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
-                <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
-            </p>
-            <h2 class="module-title">Indices de accesibilidad al espacio verde </h2>
-            <p>
-                Indicador: Distancia caminable a espacios verdes desde viviendas (usualmente 300-500 m).
-                1. Que el 100% de la población esté a menos de 500 metros (7–10 min a pie) de un parque, jardín o zona verde pública.
-                2. Accesos peatonales seguros y continuos.                
-                3. Espacios abiertos y funcionales (no cerrados, ni abandonados).
-                <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
-                <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
-            </p>
-            <div class="cards-container">
-                {% for tarjeta in [
-                    {"imagen": "INDICES.gif", "titulo": "Viable ✅", "contenido": "1. Mas del 90% de la población tiene
-                    acceso a un espacio verde a menos de 500 m. 2. Red de andenes en buen estado y señalización adecuada."},
-                    {"imagen": "MEDIANA-MENTETE-VIABLE.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Entre 50% y 90% de la población accede en menos de 500 m. 
-                    2. Hay espacios verdes, pero poco conectados o mal mantenidos.."},
-                    {"imagen": "NO-VIABLE.gif", "titulo": "No viable ❌", "contenido": "1. Menos del 50% de la población está cerca de un espacio verde.
-                    2. Zonas verdes cerradas, inseguras o inaccesibles."}
-                ] %}
-                <div class="diagnostico-card">
-                    <div class="card-icon">
-                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                    </div>
-                    <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                    <div class="card-content">
-                        <p>{{ tarjeta.contenido }}</p>
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-            <h2 class="module-title">Porcentaje de cobertura verde</h2>
-            <p>
-                Indicador: Relación entre el área verde y el área total del sector analizado.
-                1.Que al menos 10% del área urbana esté ocupada por vegetación (parques, jardines, árboles, corredores verdes, etc.).
-                2.Ideal: superar el 15%, según estándares OMS y lineamientos urbanos sostenibles.
-                3.Datos confiables de superficie y clasificación del suelo (GIS, IDECA, catastros).
-                <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
-                <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
-            </p>
-            <div class="cards-container">
-                {% for tarjeta in [
-                    {"imagen": "VIABLE_COBERTURA.gif", "titulo": "Viable ✅",
-                                "contenido": "1. Área verde ≥ 15% del total. 2. Vegetación bien distribuida en el sector."},
-                    {"imagen": "MEDIANAMENTE-VIABLE_COBERTURA.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Entre 10% y 14.99% de cobertura verde.
-                    2. Concentración en algunos puntos, pero no equitativa."},
-                    {"imagen": "NO-VIABLE COBERTURA.gif", "titulo": "No viable ❌", "contenido": "1. Menos del 10% del área es verde.
-                    2. Grandes zonas sin ningún tipo de vegetación."}
-                ] %}
-                <div class="diagnostico-card">
-                    <div class="card-icon">
-                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                    </div>
-                    <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                    <div class="card-content">
-                        <p>{{ tarjeta.contenido }}</p>
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-            <h2 class="module-title">Individuos o grupos sobre andenes, avenidas y plazas</h2>
-            <p>
-                Indicador: Cantidad y distribución de árboles en espacio público construido.
-
-                1. Al menos 1 árbol cada 10 metros lineales de vía o andén.
-                2. En plazas, mínimo 15-25 árboles por cada 1,000 m² de superficie pública.
-                3. Especies adecuadas para entornos urbanos, con mantenimiento y buen estado fitosanitario.
-                <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
-                <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
-            </p>
-            <div class="cards-container">
-                {% for tarjeta in [
-                    {"imagen": "VIABILIDAD-Individuos_Ar.gif", "titulo": "Viable ✅", "contenido": "1. 1 árbol cada 10 m en vías principales y andenes.
-                    2. Plazas con sombra vegetal adecuada y diversidad de especies."},
-                    {"imagen": "MEDIANAMENTE-VIABILIDAD-Individuos_Ar.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Árboles dispersos o mal distribuidos (1 cada 20–30 m).
-                    2. Algunas zonas sin sombra o con especies inadecuadas."},
-                    {"imagen": "NO-VIABILIDAD-Individuos_Ar.gif", "titulo": "No viable ❌", "contenido": "1. No hay arbolado urbano o está deteriorado.
-                    2. Riesgo para peatones por falta de cobertura vegetal."}
-                ] %}
-                <div class="diagnostico-card">
-                    <div class="card-icon">
-                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                    </div>
-                    <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                    <div class="card-content">
-                        <p>{{ tarjeta.contenido }}</p>
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-        </div>
-        {% elif Proceso|lower == 'corredores_ecologicos' %}
-        <div class="module-section" id="diagnosticoModule">
+            
+        {% if Proceso|lower == 'parques_urbanos' %}
             <div class="container">
-                <h2 class="module-title first">Diagnóstico - Corredores Ecológicos</h2>
-            <p>
-                La viabilidad de una intervención urbana puede clasificarse como viable, cuando las condiciones permiten su ejecución sin mayores
-                obstáculos; medianamente viable, cuando es posible realizarla con algunos ajustes o mejoras; y no viable,
-                cuando existen restricciones que impiden su implementación. Esta clasificación permite priorizar acciones de manera eficiente.
-                <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
-                <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
-            </p>
-                <h2 class="module-title first">Indices de accesibilidad al espacio verde</h2>
+            
+                <h2 class="module-title first">Diagnóstico - Parques Urbanos</h2>
+                <p>
+                    La viabilidad de una intervención urbana puede clasificarse como viable, cuando las condiciones permiten su ejecución sin mayores
+                    obstáculos; medianamente viable, cuando es posible realizarla con algunos ajustes o mejoras; y no viable,
+                    cuando existen restricciones que impiden su implementación. Esta clasificación permite priorizar acciones de manera eficiente.
+                    <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
+                    <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
+                </p>
+                <h2 class="module-title">Indices de accesibilidad al espacio verde </h2>
                 <p>
                     Indicador: Distancia caminable a espacios verdes desde viviendas (usualmente 300-500 m).
                     1. Que el 100% de la población esté a menos de 500 metros (7–10 min a pie) de un parque, jardín o zona verde pública.
@@ -143,7 +40,7 @@
                     <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
                     <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
                 </p>
-                <div class="cards-container">
+                <div class="tarjetas-seccion">
                     {% for tarjeta in [
                         {"imagen": "INDICES.gif", "titulo": "Viable ✅", "contenido": "1. Mas del 90% de la población tiene
                         acceso a un espacio verde a menos de 500 m. 2. Red de andenes en buen estado y señalización adecuada."},
@@ -152,65 +49,55 @@
                         {"imagen": "NO-VIABLE.gif", "titulo": "No viable ❌", "contenido": "1. Menos del 50% de la población está cerca de un espacio verde.
                         2. Zonas verdes cerradas, inseguras o inaccesibles."}
                     ] %}
-                    <div class="diagnostico-card">
-                        <div class="card-icon">
-                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                        </div>
-                        <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                        <div class="card-content">
+                    <div class="tarjeta">
+                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                        <div class="tarjeta-contenido">
+                            <h2>{{ tarjeta.titulo }}</h2>
                             <p>{{ tarjeta.contenido }}</p>
                         </div>
                     </div>
+
                     {% endfor %}
                 </div>
-
-        </div>
-        <div class="module-section" id="diagnosticoModule">
-            <div class="container">
-                <h2 class="module-title">Espacios lineales, caminos arbolados que conectan zonas verdes</h2>
+                <h2 class="module-title">Porcentaje de cobertura verde</h2>
                 <p>
-                    Indicador: Presencia de conectividad ecológica entre zonas verdes.
-
-                    1. Vías, senderos o franjas con vegetación que conecten al menos dos espacios verdes mayores.
-                    2. Presencia continua de árboles o jardines lineales.
-                    3. Anchura mínima sugerida: 1.5 m de franja verde con vegetación nativa o adaptada.
+                    Indicador: Relación entre el área verde y el área total del sector analizado.
+                    1.Que al menos 10% del área urbana esté ocupada por vegetación (parques, jardines, árboles, corredores verdes, etc.).
+                    2.Ideal: superar el 15%, según estándares OMS y lineamientos urbanos sostenibles.
+                    3.Datos confiables de superficie y clasificación del suelo (GIS, IDECA, catastros).
                     <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
                     <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
                 </p>
-                <div class="cards-container">
+                <div class="tarjetas-seccion">
                     {% for tarjeta in [
-                        {"imagen": "VIABLE_Espacios-lineales.gif", "titulo": "Viable ✅", "contenido": "1. Existen conexiones verdes entre parques y zonas ecológicas.
-                        2. Caminos arbolados con continuidad y mantenimiento."},
-                        {"imagen": "MEDIANAMENTE-VIABLE_Espacios-lineales.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Hay tramos con árboles o vegetación, pero no están conectados del todo.
-                        2. Espacios verdes interrumpidos por vías o infraestructuras."},
-                        {"imagen": "NO-VIABLE_Espacios-lineales.gif", "titulo": "No viable ❌", "contenido": "1. No hay corredores ecológicos o están completamente desconectados.
-                        2. Alta fragmentación del paisaje urbano."}
+                        {"imagen": "VIABLE_COBERTURA.gif", "titulo": "Viable ✅",
+                                    "contenido": "1. Área verde ≥ 15% del total. 2. Vegetación bien distribuida en el sector."},
+                        {"imagen": "MEDIANAMENTE-VIABLE_COBERTURA.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Entre 10% y 14.99% de cobertura verde.
+                        2. Concentración en algunos puntos, pero no equitativa."},
+                        {"imagen": "NO-VIABLE COBERTURA.gif", "titulo": "No viable ❌", "contenido": "1. Menos del 10% del área es verde.
+                        2. Grandes zonas sin ningún tipo de vegetación."}
                     ] %}
-                    <div class="diagnostico-card">
-                        <div class="card-icon">
-                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                        </div>
-                        <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                        <div class="card-content">
+                    <div class="tarjeta">
+                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                        <div class="tarjeta-contenido">
+                            <h2>{{ tarjeta.titulo }}</h2>
                             <p>{{ tarjeta.contenido }}</p>
                         </div>
                     </div>
+
                     {% endfor %}
                 </div>
-        </div>
-        <div class="module-section" id="diagnosticoModule">
-            <div class="container">
-                <h2 class="module-title">Individuos o grupos sobre los andenes, avenidas y plazas</h2>
+                <h2 class="module-title">Individuos o grupos sobre andenes, avenidas y plazas</h2>
                 <p>
                     Indicador: Cantidad y distribución de árboles en espacio público construido.
-    
+
                     1. Al menos 1 árbol cada 10 metros lineales de vía o andén.
                     2. En plazas, mínimo 15-25 árboles por cada 1,000 m² de superficie pública.
                     3. Especies adecuadas para entornos urbanos, con mantenimiento y buen estado fitosanitario.
                     <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
                     <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
                 </p>
-                <div class="cards-container">
+                <div class="tarjetas-seccion">
                     {% for tarjeta in [
                         {"imagen": "VIABILIDAD-Individuos_Ar.gif", "titulo": "Viable ✅", "contenido": "1. 1 árbol cada 10 m en vías principales y andenes.
                         2. Plazas con sombra vegetal adecuada y diversidad de especies."},
@@ -219,179 +106,280 @@
                         {"imagen": "NO-VIABILIDAD-Individuos_Ar.gif", "titulo": "No viable ❌", "contenido": "1. No hay arbolado urbano o está deteriorado.
                         2. Riesgo para peatones por falta de cobertura vegetal."}
                     ] %}
-                    <div class="diagnostico-card">
-                        <div class="card-icon">
-                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
-                        </div>
-                        <h3 class="card-title">{{ tarjeta.titulo }}</h3>
-                        <div class="card-content">
+                    <div class="tarjeta">
+                        <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                        <div class="tarjeta-contenido">
+                            <h2>{{ tarjeta.titulo }}</h2>
                             <p>{{ tarjeta.contenido }}</p>
                         </div>
                     </div>
+
                     {% endfor %}
                 </div>
-        </div>
-        {% else %}
-            <p>No hay Excel disponible para este proceso. Valor recibido: {{ Proceso }}</p>
-        {% endif %}
-    <div class="container explanation-and-charts mt-5">
-        <h2 class="module-title mb-4">Visualización y Análisis de Datos</h2>
-        
-        <div class="charts-with-explanations">
-            <!-- Gráfico 1: Porcentaje de Indicador por Fase -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-bar"></i>
-                            </div>
-                            <h3 class="card-title">Gráfico de Barras – Porcentaje del Indicador por Fase 📊</h3>
-                            <div class="card-content">
-                                <p>Permite comparar el porcentaje de cumplimiento del indicador en cada fase del proyecto.</p>
-                                <p>La <strong>Distribución de Viabilidad</strong> refleja el balance entre proyectos viables, medianamente viables y no viables, permitiendo identificar áreas que requieren atención prioritaria.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Porcentaje de Indicador por Fase</h5>
-                            <canvas id="graficoIndicador"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
-    
-            <!-- Gráfico 2: Comparación de Área Verde vs Área Total -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-leaf"></i>
-                            </div>
-                            <h3 class="card-title">Gráfico de Barras Apiladas – Comparación de Área Verde vs Área Total 📏</h3>
-                            <div class="card-content">
-                                <p>El gráfico de <strong>Relación Área Verde vs Área Total</strong> presenta la proporción de espacios verdes en cada fase del proyecto urbano. Un equilibrio adecuado mejora la calidad ambiental, reduce islas de calor y promueve la biodiversidad urbana.</p>
-                                <p>Se recomienda mantener un mínimo del 30% de áreas verdes según estándares internacionales de urbanismo sostenible.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Comparación de Área Verde vs Área Total por Fase</h5>
-                            <canvas id="graficoArea"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Gráfico 3: Relación entre Área Verde y Porcentaje del Indicador -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-bullseye"></i>
-                            </div>
-                            <h3 class="card-title">Gráfico de Dispersión – Relación entre Área Verde y Porcentaje del Indicador 🎯</h3>
-                            <div class="card-content">
-                                <p>Visualiza la correlación entre el tamaño de áreas verdes y el cumplimiento de indicadores de sostenibilidad, mostrando patrones de relación entre estas variables.</p>
-                                <p>Permite identificar si existe una tendencia positiva donde mayores áreas verdes se asocian con mejores indicadores de sostenibilidad urbana.</p>
+            {% elif Proceso|lower == 'corredores_ecologicos' %}
+            <div class="module-section" id="diagnosticoModule">
+                <div class="container">
+                    <h2 class="module-title first">Diagnóstico - Corredores Ecológicos</h2>
+                <p>
+                    La viabilidad de una intervención urbana puede clasificarse como viable, cuando las condiciones permiten su ejecución sin mayores
+                    obstáculos; medianamente viable, cuando es posible realizarla con algunos ajustes o mejoras; y no viable,
+                    cuando existen restricciones que impiden su implementación. Esta clasificación permite priorizar acciones de manera eficiente.
+                    <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
+                    <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
+                </p>
+                    <h2 class="module-title first">Indices de accesibilidad al espacio verde</h2>
+                    <p>
+                        Indicador: Distancia caminable a espacios verdes desde viviendas (usualmente 300-500 m).
+                        1. Que el 100% de la población esté a menos de 500 metros (7–10 min a pie) de un parque, jardín o zona verde pública.
+                        2. Accesos peatonales seguros y continuos.                
+                        3. Espacios abiertos y funcionales (no cerrados, ni abandonados).
+                        <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
+                        <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
+                    </p>
+                    <div class="tarjetas-seccion">
+                        {% for tarjeta in [
+                            {"imagen": "INDICES.gif", "titulo": "Viable ✅", "contenido": "1. Mas del 90% de la población tiene
+                            acceso a un espacio verde a menos de 500 m. 2. Red de andenes en buen estado y señalización adecuada."},
+                            {"imagen": "MEDIANA-MENTETE-VIABLE.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Entre 50% y 90% de la población accede en menos de 500 m. 
+                            2. Hay espacios verdes, pero poco conectados o mal mantenidos.."},
+                            {"imagen": "NO-VIABLE.gif", "titulo": "No viable ❌", "contenido": "1. Menos del 50% de la población está cerca de un espacio verde.
+                            2. Zonas verdes cerradas, inseguras o inaccesibles."}
+                        ] %}
+                        <div class="tarjeta">
+                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                            <div class="tarjeta-contenido">
+                                <h2>{{ tarjeta.titulo }}</h2>
+                                <p>{{ tarjeta.contenido }}</p>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Relación entre Área Verde y Porcentaje del Indicador</h5>
-                            <canvas id="graficoDispersion"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Gráfico 4: Evolución del Indicador a lo Largo de las Fases -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h3 class="card-title">Gráfico de Líneas – Evolución del Indicador a lo Largo de las Fases 📈</h3>
-                            <div class="card-content">
-                                <p>Muestra la progresión temporal de los indicadores de sostenibilidad a través de las diferentes fases del proyecto urbano.</p>
-                                <p>Facilita el análisis de tendencias, permitiendo identificar mejoras o deterioros en la sostenibilidad a lo largo del tiempo del desarrollo.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Evolución del Indicador a lo Largo de las Fases</h5>
-                            <canvas id="graficoLineas"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Gráfico 5: Distribución de la Viabilidad de las Fases (Donut) -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <h3 class="card-title">Gráfico de Donut – Distribución de la Viabilidad de las Fases 🍩</h3>
-                            <div class="card-content">
-                                <p>Representa visualmente la proporción de fases categorizadas como viables, medianamente viables y no viables dentro del proyecto.</p>
-                                <p>Proporciona una visión general rápida del estado de viabilidad del proyecto, facilitando la toma de decisiones sobre áreas que requieren intervención.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Distribución de la Viabilidad de las Fases</h5>
-                            <div style="height: 300px; position: relative;">
-                                <canvas id="graficoPie"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Gráfico 6: Indicador de Sostenibilidad por Fase (Radar) -->
-            <div class="chart-explanation-pair">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="diagnostico-card explanation-card">
-                            <div class="card-icon">
-                                <i class="fas fa-spider"></i>
+            </div>
+            <div class="module-section" id="diagnosticoModule">
+                <div class="container">
+                    <h2 class="module-title">Espacios lineales, caminos arbolados que conectan zonas verdes</h2>
+                    <p>
+                        Indicador: Presencia de conectividad ecológica entre zonas verdes.
+
+                        1. Vías, senderos o franjas con vegetación que conecten al menos dos espacios verdes mayores.
+                        2. Presencia continua de árboles o jardines lineales.
+                        3. Anchura mínima sugerida: 1.5 m de franja verde con vegetación nativa o adaptada.
+                        <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
+                        <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
+                    </p>
+                    <div class="tarjetas-seccion">
+                        {% for tarjeta in [
+                            {"imagen": "VIABLE_Espacios-lineales.gif", "titulo": "Viable ✅", "contenido": "1. Existen conexiones verdes entre parques y zonas ecológicas.
+                            2. Caminos arbolados con continuidad y mantenimiento."},
+                            {"imagen": "MEDIANAMENTE-VIABLE_Espacios-lineales.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Hay tramos con árboles o vegetación, pero no están conectados del todo.
+                            2. Espacios verdes interrumpidos por vías o infraestructuras."},
+                            {"imagen": "NO-VIABLE_Espacios-lineales.gif", "titulo": "No viable ❌", "contenido": "1. No hay corredores ecológicos o están completamente desconectados.
+                            2. Alta fragmentación del paisaje urbano."}
+                        ] %}
+                        <div class="tarjeta">
+                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                            <div class="tarjeta-contenido">
+                                <h2>{{ tarjeta.titulo }}</h2>
+                                <p>{{ tarjeta.contenido }}</p>
                             </div>
-                            <h3 class="card-title">Gráfico de Radar – Indicador de Sostenibilidad por Fase 🕸️</h3>
-                            <div class="card-content">
-                                <p>Visualiza múltiples dimensiones de sostenibilidad simultáneamente, permitiendo comparar el rendimiento de diferentes fases en varios indicadores.</p>
-                                <p>Ideal para identificar fortalezas y debilidades específicas en cada fase del proyecto urbano sostenible.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="module-section" id="diagnosticoModule">
+                <div class="container">
+                    <h2 class="module-title">Individuos o grupos sobre los andenes, avenidas y plazas</h2>
+                    <p>
+                        Indicador: Cantidad y distribución de árboles en espacio público construido.
+        
+                        1. Al menos 1 árbol cada 10 metros lineales de vía o andén.
+                        2. En plazas, mínimo 15-25 árboles por cada 1,000 m² de superficie pública.
+                        3. Especies adecuadas para entornos urbanos, con mantenimiento y buen estado fitosanitario.
+                        <!--🔗 Más información sobre criterios de evaluación y planificación urbana:
+                        <a href="https://minvivienda.gov.co"> Documentacion completa</a>-->
+                    </p>
+                    <div class="tarjetas-seccion">
+                        {% for tarjeta in [
+                            {"imagen": "VIABILIDAD-Individuos_Ar.gif", "titulo": "Viable ✅", "contenido": "1. 1 árbol cada 10 m en vías principales y andenes.
+                            2. Plazas con sombra vegetal adecuada y diversidad de especies."},
+                            {"imagen": "MEDIANAMENTE-VIABILIDAD-Individuos_Ar.gif", "titulo": "Medianamente viable ⚠️", "contenido": "1. Árboles dispersos o mal distribuidos (1 cada 20–30 m).
+                            2. Algunas zonas sin sombra o con especies inadecuadas."},
+                            {"imagen": "NO-VIABILIDAD-Individuos_Ar.gif", "titulo": "No viable ❌", "contenido": "1. No hay arbolado urbano o está deteriorado.
+                            2. Riesgo para peatones por falta de cobertura vegetal."}
+                        ] %}
+                        <div class="tarjeta">
+                            <img class="tarjeta-imagen" src="{{ url_for('static', filename='img/' ~ tarjeta.imagen) }}" alt="{{ tarjeta.titulo }}">
+                            <div class="tarjeta-contenido">
+                                <h2>{{ tarjeta.titulo }}</h2>
+                                <p>{{ tarjeta.contenido }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+            </div>
+            {% else %}
+                <p>No hay Excel disponible para este proceso. Valor recibido: {{ Proceso }}</p>
+            {% endif %}
+        <div class="container explanation-and-charts mt-5">
+            <h2 class="module-title mb-4">Visualización y Análisis de Datos</h2>
+            
+            <div class="charts-with-explanations">
+                <!-- Gráfico 1: Porcentaje de Indicador por Fase -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Barras – Porcentaje del Indicador por Fase 📊</h3>
+                                <div class="card-content">
+                                    <p>Permite comparar el porcentaje de cumplimiento del indicador en cada fase del proyecto.</p>
+                                    <p>La <strong>Distribución de Viabilidad</strong> refleja el balance entre proyectos viables, medianamente viables y no viables, permitiendo identificar áreas que requieren atención prioritaria.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Porcentaje de Indicador por Fase</h5>
+                                <canvas id="graficoIndicador"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card p-3 shadow-sm chart-card">
-                            <h5>Indicador de Sostenibilidad por Fase</h5>
-                            <div style="height: 300px; position: relative;">
-                                <canvas id="graficoRadar"></canvas>
+                </div>
+        
+                <!-- Gráfico 2: Comparación de Área Verde vs Área Total -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Barras Apiladas – Comparación de Área Verde vs Área Total 📏</h3>
+                                <div class="card-content">
+                                    <p>El gráfico de <strong>Relación Área Verde vs Área Total</strong> presenta la proporción de espacios verdes en cada fase del proyecto urbano. Un equilibrio adecuado mejora la calidad ambiental, reduce islas de calor y promueve la biodiversidad urbana.</p>
+                                    <p>Se recomienda mantener un mínimo del 30% de áreas verdes según estándares internacionales de urbanismo sostenible.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Comparación de Área Verde vs Área Total por Fase</h5>
+                                <canvas id="graficoArea"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Gráfico 3: Relación entre Área Verde y Porcentaje del Indicador -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Dispersión – Relación entre Área Verde y Porcentaje del Indicador 🎯</h3>
+                                <div class="card-content">
+                                    <p>Visualiza la correlación entre el tamaño de áreas verdes y el cumplimiento de indicadores de sostenibilidad, mostrando patrones de relación entre estas variables.</p>
+                                    <p>Permite identificar si existe una tendencia positiva donde mayores áreas verdes se asocian con mejores indicadores de sostenibilidad urbana.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Relación entre Área Verde y Porcentaje del Indicador</h5>
+                                <canvas id="graficoDispersion"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Gráfico 4: Evolución del Indicador a lo Largo de las Fases -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Líneas – Evolución del Indicador a lo Largo de las Fases 📈</h3>
+                                <div class="card-content">
+                                    <p>Muestra la progresión temporal de los indicadores de sostenibilidad a través de las diferentes fases del proyecto urbano.</p>
+                                    <p>Facilita el análisis de tendencias, permitiendo identificar mejoras o deterioros en la sostenibilidad a lo largo del tiempo del desarrollo.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Evolución del Indicador a lo Largo de las Fases</h5>
+                                <canvas id="graficoLineas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Gráfico 5: Distribución de la Viabilidad de las Fases (Donut) -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Donut – Distribución de la Viabilidad de las Fases 🍩</h3>
+                                <div class="card-content">
+                                    <p>Representa visualmente la proporción de fases categorizadas como viables, medianamente viables y no viables dentro del proyecto.</p>
+                                    <p>Proporciona una visión general rápida del estado de viabilidad del proyecto, facilitando la toma de decisiones sobre áreas que requieren intervención.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Distribución de la Viabilidad de las Fases</h5>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="graficoPie"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico 6: Indicador de Sostenibilidad por Fase (Radar) -->
+                <div class="chart-explanation-pair">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-6">
+                            <div class="diagnostico-card explanation-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-spider"></i>
+                                </div>
+                                <h3 class="card-title">Gráfico de Radar – Indicador de Sostenibilidad por Fase 🕸️</h3>
+                                <div class="card-content">
+                                    <p>Visualiza múltiples dimensiones de sostenibilidad simultáneamente, permitiendo comparar el rendimiento de diferentes fases en varios indicadores.</p>
+                                    <p>Ideal para identificar fortalezas y debilidades específicas en cada fase del proyecto urbano sostenible.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card p-3 shadow-sm chart-card">
+                                <h5>Indicador de Sostenibilidad por Fase</h5>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="graficoRadar"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
         <!-- Navegación fija -->
         <div class="module-navigation">
-            <button class="nav-button" id="navToTabla" title="Ir a Tabla"><i class="fas fa-table"></i></button>
-            <button class="nav-button" id="navToDiagnostico" title="Ir a Diagnóstico"><i class="fas fa-chart-pie"></i></button>
-            <button class="nav-button" id="navToResultados" title="Ir a Resultados"><i class="fa-solid fa-chart-column" style="color: #fafafa;"></i></button>
+            <button class="module-nav-button" id="navToTabla" title="Ir a Tabla"><i class="fas fa-table"></i></button>
+            <button class="module-nav-button" id="navToDiagnostico" title="Ir a Diagnóstico"><i class="fas fa-chart-pie"></i></button>
+            <button class="module-nav-button" id="navToResultados" title="Ir a Resultados"><i class="fa-solid fa-chart-column" style="color: #fafafa;"></i></button>
         </div>
     </div>
     {% endblock %}

@@ -13,7 +13,8 @@
     --transition: all 0.3s ease;
 }
 
-body {
+/* Removemos los estilos generales de body para evitar conflictos */
+.module-section {
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     background-color: var(--background-light);
     color: var(--text-dark);
@@ -80,7 +81,6 @@ body {
     box-shadow: none;
     transform: none;
 }
-
 
 /* Estilos para las tarjetas de diagnóstico */
 .cards-container {
@@ -187,8 +187,8 @@ body {
     margin: 15px auto;
 }
 
-/* Estilos para los gráficos */
-.container .row .card {
+/* Estilos para los gráficos - más específicos para evitar conflictos */
+.module-section .container .row .card {
     border: none;
     border-radius: 12px;
     box-shadow: var(--card-shadow);
@@ -198,13 +198,13 @@ body {
     border-top: 4px solid var(--secondary-color);
 }
 
-.container .row .card:hover {
+.module-section .container .row .card:hover {
     transform: translateY(-5px);
     box-shadow: var(--card-shadow-hover);
 }
 
-.container .row .card h4,
-.container .row .card h5 {
+.module-section .container .row .card h4,
+.module-section .container .row .card h5 {
     color: var(--text-dark);
     font-weight: 600;
     margin-bottom: 1.5rem;
@@ -212,10 +212,9 @@ body {
     font-size: 1.3rem;
 }
 
-.container .row .card canvas {
+.module-section .container .row .card canvas {
     padding: 15px;
 }
-
 
 /* Estilos para la integración de explicaciones y gráficos */
 .explanation-and-charts {
@@ -311,9 +310,10 @@ body {
     flex-grow: 1;
     padding: 10px;
 }
+
 /* Ajuste específico para los gráficos de donut y radar */
 #graficoPie, #graficoRadar {
-    max-height: 300px; /* Puedes ajustar este valor según necesites */
+    max-height: 300px;
     width: 100%;
 }
 
@@ -337,8 +337,7 @@ body {
     }
 }
 
-
-/* Navegación entre módulos */
+/* Navegación entre módulos - Cambiamos el nombre de clase para evitar conflictos */
 .module-navigation {
     position: fixed;
     bottom: 20px;
@@ -349,7 +348,7 @@ body {
     z-index: 100;
 }
 
-.nav-button {
+.module-nav-button {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -365,7 +364,7 @@ body {
     transition: transform 0.3s, background-color 0.3s;
 }
 
-.nav-button:hover {
+.module-nav-button:hover {
     background-color: #218838;
     transform: scale(1.1);
 }
@@ -413,7 +412,7 @@ body {
         gap: 25px;
     }
     
-    .nav-button {
+    .module-nav-button {
         width: 45px;
         height: 45px;
     }
