@@ -47,8 +47,9 @@ h1 {
 @media(min-width: 992px) {
     h1 {
         letter-spacing: 10px;
-        font-size: 110px;
+        font-size: 90px;
     }
+    
     
     .description {
         font-size: 24px;

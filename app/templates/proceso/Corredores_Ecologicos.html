@@ -32,18 +32,40 @@
         </div>
 
         <!-- Buttons for actions -->
-        <div class="mb-3">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearModal">
-                <i class="fas fa-plus"></i> Nuevo Registro
+                <div class="action-buttons-compact d-block d-sm-none">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearModal" title="Nuevo Registro">
+                <i class="fas fa-plus"></i>
+                <span>Nuevo</span>
             </button>
-
-            <a href="{{ url_for('exportar_excel', proceso=Proceso) }}" class="btn btn-primary ms-2">
-                <i class="fas fa-file-excel"></i> Exportar a Excel
+            
+            <a href="{{ url_for('exportar_excel', proceso=Proceso) }}" class="btn btn-primary" title="Exportar a Excel">
+                <i class="fas fa-file-excel"></i>
+                <span>Excel</span>
             </a>
-            <a data-bs-toggle="modal" data-bs-target="#crearTitulo" class="btn btn-success">
-                <i class="fas fa-pen-nib"></i> Agregar Titulo tabla
+            
+            <a data-bs-toggle="modal" data-bs-target="#crearTitulo" class="btn btn-success" title="Agregar Título">
+                <i class="fas fa-pen-nib"></i>
+                <span>Título</span>
             </a>
         </div>
+
+        <div class="action-buttons d-none d-sm-flex">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearModal">
+                <i class="fas fa-plus"></i>
+                <span>Nuevo Registro</span>
+            </button>
+            
+            <a href="{{ url_for('exportar_excel', proceso=Proceso) }}" class="btn btn-primary">
+                <i class="fas fa-file-excel"></i>
+                <span>Exportar Excel</span>
+            </a>
+            
+            <a data-bs-toggle="modal" data-bs-target="#crearTitulo" class="btn btn-success">
+                <i class="fas fa-pen-nib"></i>
+                <span>Agregar Título tabla</span>
+            </a>
+        </div>
+
 
         <h2 class="title-table">   </h2>
         <!-- Flash Messages -->

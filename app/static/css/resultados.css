@@ -329,6 +329,18 @@ p {
         height: 50px;
         font-size: 18px;
     }
+
+    .module-navigation {
+        flex-direction: row;
+        justify-content: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        padding: 15px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        gap: 25px;
+    }
 }
 
 .navbar{
