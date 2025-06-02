@@ -89,18 +89,12 @@
         <p style="margin-top: 30px;">Para obtener el máximo provecho de estos recursos, recomendamos primero revisar el reporte PDF para entender el panorama general, y luego utilizar la plantilla Excel para realizar análisis específicos según las necesidades de su proyecto.</p>
     </div>
 
-    <!-- Navegación fija para cambiar entre módulos -->
-    <div class="module-navigation">
-        <button class="nav-button" id="navToTabla" title="Ir a Tabla">
-            <i class="fas fa-table"></i>
-        </button>
-        <button class="nav-button" id="navToDiagnostico" title="Ir a Diagnóstico">
-            <i class="fas fa-chart-pie"></i>
-        </button>
-        <button class="nav-button" id="navToResultados" title="Ir a Resultado">
-            <i class="fa-solid fa-chart-column"></i>
-        </button>
-    </div>
+        <!-- Navegación fija -->
+        <div class="module-navigation">
+            <button class="module-nav-button" id="navToTabla" title="Ir a Tabla"><i class="fas fa-table"></i></button>
+            <button class="module-nav-button" id="navToDiagnostico" title="Ir a Diagnóstico"><i class="fas fa-chart-pie"></i></button>
+            <button class="module-nav-button" id="navToResultados" title="Ir a Resultados"><i class="fa-solid fa-chart-column" style="color: #fafafa;"></i></button>
+        </div>
     {% endblock %}
 
     {% block extra_js %}

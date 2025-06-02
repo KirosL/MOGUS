@@ -10,6 +10,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden; /* Previene scroll horizontal en toda la página */
+    width: 100%;
+}
+
 body {
     font-family: 'Urbanist', sans-serif;
 }
