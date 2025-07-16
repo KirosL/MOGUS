@@ -5,10 +5,10 @@ builder = "nixpacks"
 nixPkgs = [
   "python311",
   "python311Packages.pip",
-  "gobject",
-  "pango",
   "glib",
+  "gobject-introspection",
   "gdk-pixbuf",
+  "pango",
   "cairo",
   "harfbuzz",
   "fontconfig",
@@ -19,9 +19,8 @@ nixPkgs = [
 cmds = [
   "python -m venv /opt/venv",
   ". /opt/venv/bin/activate",
-  "pip install --upgrade pip",
   "pip install -r requirements.txt"
 ]
 
 [start]
-cmd = ". /opt/venv/bin/activate && python app/app.py"
+cmd = "python app/app.py"
