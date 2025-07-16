@@ -1,8 +1,8 @@
-[phases.setup]
-nixPkgs = ['python311', 'python311Packages.pip']
+[build]
+builder = "nixpacks"
 
-[phases.install]
-cmds = ['pip install -r requirements-lite.txt']
+[phases.setup]
+nixPkgs = ["python311", "python311Packages.pip"]
 
 [start]
-cmd = 'python app/app.py'
+cmd = "python app/app.py"
