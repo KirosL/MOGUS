@@ -982,8 +982,8 @@ def crear_app():
     return app
 
 
-# Punto de entrada de la aplicación
 if __name__ == '__main__':
-    app = crear_app()  # Creamos la app usando la función crear_app
-    
-    app.run(port=5000, debug=True)  # Inicia la aplicación Flask en el puerto 5000 con modo debug activado o 5000 con modo debug activado
+    app = crear_app()  # Crear la app normalmente
+
+    port = int(os.environ.get("PORT", 5000))  # Railway define PORT como variable de entorno
+    app.run(host='0.0.0.0', port=port, debug=True)  # Escuchar en todas las interfaces
