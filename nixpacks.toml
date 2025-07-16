@@ -2,7 +2,15 @@
 builder = "nixpacks"
 
 [phases.setup]
-nixPkgs = ["python311", "python311Packages.pip"]
+nixPkgs = [
+  "python311",
+  "python311Packages.pip",
+  "glib",
+  "gobject-introspection",
+  "pango",
+  "cairo",
+  "gdk-pixbuf"
+]
 
 [start]
 cmd = "python app/app.py"
