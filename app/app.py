@@ -985,9 +985,9 @@ def crear_app():
         
     return app
 
-
+app = crear_app()  # Para Gunicorn en producción
 if __name__ == '__main__':
-    app = crear_app()  # Crear la app normalmente
 
     port = int(os.environ.get("PORT", 5000))  # Railway define PORT como variable de entorno
     app.run(host='0.0.0.0', port=port, debug=True)  # Escuchar en todas las interfaces
+
