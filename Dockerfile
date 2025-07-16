@@ -30,4 +30,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8000
 
 # Comando para ejecutar tu aplicación
-CMD ["python", "app/app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
