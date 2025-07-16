@@ -170,20 +170,24 @@ def crear_app():
 
     # Función para verificar las tablas
     def check_tables():
-        # Usamos inspect para obtener las tablas de la base de datos
         inspector = inspect(db.engine)
         tables = inspector.get_table_names()
-        
+    
         print("Tablas en la base de datos:", tables)
-        if 'parque_urbano' in tables:
+    
+        # Convertimos todas las tablas a minúsculas para comparación
+        tables_lower = [t.lower() for t in tables]
+    
+        if 'parque_urbano' in tables_lower:
             print("La tabla 'parque_urbano' existe.")
         else:
             print("La tabla 'parque_urbano' no existe.")
-
-        if 'corredor_urbano' in tables:
+    
+        if 'corredor_urbano' in tables_lower:
             print("La tabla 'corredor_urbano' existe.")
         else:
             print("La tabla 'corredor_urbano' no existe.")
+
             
             
     # Llamar a la función para comprobar las tablas
